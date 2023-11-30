@@ -1,0 +1,53 @@
+<div class="Container our-story-partners-custom our-story1">
+  <header class="PageHeader">
+    <div class="SectionHeader SectionHeader--center">
+      <h1 class="SectionHeader__Heading Heading u-h1">{{ section.settings.title }}</h1>
+    </div>
+  </header>
+
+  <div class="PageContent Rte Grid">
+    {% for block in section.blocks %}
+    <div class="Grid__Cell 1/2--phone 1/3--tablet-and-up 1/4--desk">
+      <div class="partner">
+        <img src="{{ block.settings.logo | img_url:'original' }}">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+"name": "Partners Section",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Section Heading",
+"default": "Our Partners"
+}
+],
+"blocks": [
+{
+"type": "image",
+"name": "Logos",
+"settings": [
+{
+"type": "image_picker",
+"id": "logo",
+"label": "Partner Logo"
+}
+]
+}
+],
+"presets": [
+    {
+      "name": "partners",
+      "settings": {
+        "title": "grid"
+      }
+    }
+  ]
+}
+{% endschema %}
+

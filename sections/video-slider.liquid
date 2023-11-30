@@ -1,0 +1,451 @@
+<div class="main-item-vid videoslider">
+
+{% for block in section.blocks %}
+<div class="item cstmslider-{{ forloop.index }}">
+{%- if block.settings.background != settings.background and block.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+    CSS
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<style>
+    #shopify-section-{{ section.id }} {
+      {%- if block.settings.background == 'rgba(0,0,0,0)' -%}
+        {%- assign section_background = settings.background -%}
+      {%- else -%}
+        {%- assign section_background = block.settings.background -%}
+      {%- endif -%}
+
+      {%- if block.settings.text_color == 'rgba(0,0,0,0)' -%}
+        {%- assign heading_color = settings.heading_color -%}
+        {%- assign text_color = settings.text_color -%}
+      {%- else -%}
+        {%- assign heading_color = block.settings.text_color -%}
+        {%- assign text_color = block.settings.text_color -%}
+      {%- endif -%}
+
+      {%- if block.settings.background_type == 'boxed' -%}
+        {%- assign play_button_background = section_background -%}
+        {%- assign play_button_arrow = text_color -%}
+      {%- else -%}
+        {%- assign play_button_background = text_color -%}
+        {%- assign play_button_arrow = settings.heading_color -%}
+      {%- endif -%}
+
+      --heading-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+      --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+      --play-button-background: {{ play_button_background.red }}, {{ play_button_background.green }}, {{ play_button_background.blue }};
+      --play-button-arrow: {{ play_button_arrow.red }}, {{ play_button_arrow.green }}, {{ play_button_arrow.blue }};
+
+      --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    }
+
+     .video-section {
+      position: relative;
+      height: 700px;
+      overflow:hidden;
+  /*     max-width: var(--container-max-width); */
+      margin: auto;
+    }
+ .cta-video {
+    width: 400px;
+    margin: 252.6px 0px 0 0;
+    padding: 18px 30px;
+    background-color: #ca6019;
+    position: absolute;
+    bottom: 20%;
+    right: 10%;
+    z-index: 99;
+}
+.cstmslider-1 .cta-video p.heading
+  {
+    font-family: rector-medium !important;
+  }
+    .cta-video a.button {
+      padding: 0;
+      margin: 0px ;
+      border: solid 1px #171717;
+      width: 100%;
+    }
+.cstmslider-2  .cta-video a.button,
+  .cstmslider-1  .cta-video a.button {
+	width: 95%;
+}
+ .cstmslider-2  .cta-video,
+  .cstmslider-1  .cta-video
+  {
+    padding:18px 20px 18px 30px;
+  }
+    .cta-video a.button:hover {
+      background: #171717;
+      color: #fff;
+    }
+
+  .cta-video p.heading {
+      font-size: 2.5em;
+      line-height: 1.2;
+      margin: 0px;
+      padding: 0px;
+    }
+    .cta-video p.content {
+      font-size: 1.5em;
+      margin: 0px 0px 30px 0px;
+      padding: 0px;
+      width: 100%;
+    }
+
+    .cta-video div.btn-wrap {display: flex;}
+    .cta-video div.btn-wrap div {width: 100%}
+
+
+  .video-section {
+    position: relative;
+  }
+
+    .cta_video_wrapper{
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: transparent;
+      margin: 0 auto;
+    }
+    .page-scrolled .video-section{
+      z-index: 10;
+    }
+  {%- if block.settings.banner_image != blank -%}
+  .enbled-bg-image{
+/*     background: url('{{ block.settings.banner_image | img_url : 'master'}}'); */
+      position: unset !important;
+      width: 100%;
+      max-width: 100%;
+      background-size: cover;
+      position: relative !important;
+      background-position: 50% 8%;
+  }
+     .slider1img.enbled-bg-image
+    {
+    background-position: 50% 86%;
+    }
+    {% endif %}
+
+
+</style>
+
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+    JavaScript: This section composes the "external-video" element, but does not have dedicated custom element
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<section class="section {% if block.settings.background_type == 'full_width' or block.settings.background_type == 'boxed' and blends_with_background == false %}section--flush{% endif %}">
+<div class="banner-gradint"></div>
+{% comment %} 
+ {%- capture section_header -%}
+
+    {%- if block.settings.subheading != blank or block.settings.title != blank -%}
+      <header class="{% if block.settings.background_type == 'boxed' %}section__header{% endif %} text-container">
+        {%- if block.settings.subheading != blank -%}
+          <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if block.settings.title != blank -%}
+          <h3 class="heading h2">{{ block.settings.title | escape }}</h3>
+        {%- endif -%}
+      <div class="cta-video">
+          {{ block.settings.video_cta_html | escape }}
+      </div>
+      </header>
+    {%- endif -%}
+  {%- endcapture -%}
+{% endcomment %}
+  {%- capture video_content -%}
+    <div class="video-section {{ block.settings.classname }} video-section--{% if block.settings.background_type == 'boxed' %}boxed{% else %}full{% endif %} video-section--{{ block.settings.video_size }}  {% if block.settings.video_enble %}with-vdio-{% endif %}{% if block.settings.banner_image != blank %}enbled-bg-image{% endif %} enabled-bg-image-mobile" {% if block.settings.banner_image != blank %}style="background-image:url('{{ block.settings.banner_image | img_url : 'master' }}')"{% endif %}> 
+
+      <div class="cta_video_wrapper container">
+      <div class="cta-video">
+
+        
+        {% unless block.settings.product == blank %}
+          {% assign product = all_products[block.settings.product] %}
+        
+          {% if product %}
+            <p class="heading">{{ product.metafields.custom.mheading }}</p>
+            <p class="content">{{ product.metafields.custom.msubheading }}</p>
+          {% else %}
+        
+          {% endif %}
+        {% endunless %}
+       {% if block.settings.video_cta_heading != blank %}
+        <p class="heading">{{ block.settings.video_cta_heading | escape }}
+         {% for tag in product.tags %}
+           {% if tag == 'Available Soon' %}
+             {% if product.metafields.custom.dropping != blank %}
+         <span class="onlyfirst">Available From <br>{{ product.metafields.custom.dropping | date: '%B' | truncate: 3, ""}} {{ product.metafields.custom.dropping | date: '%d'}} at {{ product.metafields.custom.dropping.value | date: '%I:%M %p' }} GST</span>
+               {% endif %}
+             {% endif %}
+          {% endfor %}
+        </p>
+      {% endif %}
+
+        
+{% if block.settings.video_cta_heading != blank %}
+        <p class="content ts-content">{{ block.settings.video_cta_content | escape }}</p>
+{% endif %}
+        <div class="btn-wrap">
+          <div><a class="button" href="{{ block.settings.video_cta_btn_link1 | escape }}">{{ block.settings.video_cta_btn_label1 | escape }}</a></div>
+          <div class="lstbtn"><a class="button" href="{{ block.settings.video_cta_btn_link2 | escape }}">{{ block.settings.video_cta_btn_label2 | escape }}</a></div>
+        </div>  
+      </div>
+      </div>
+{% if block.settings.video_enble %}
+      <external-video {% if block.settings.autoplay %}autoplay{% endif %} provider="{{ block.settings.video_url.type | escape }}" class="video-wrapper {% if block.settings.autoplay %}video-wrapper--inert{% endif %} {% if block.settings.background_type == 'full_width' and block.settings.video_size != 'auto' %}video-wrapper--cover{% endif %}">
+
+<video width="100%" height="240" autoplay muted loop playsinline>
+  {% if block.settings.video_link != blank %}
+  <source  src="{{ block.settings.video_link }}" type="video/mp4">
+  {% endif %}
+  {% if block.settings.video_link2 != blank %}
+  <source src="{{ block.settings.video_link2 }}" type="video/webm">
+    {% endif %}
+Your browser does not support the video tag.
+</video>
+
+    
+        <div class="video-wrapper__poster">
+    <!--
+          {%- if block.settings.image != blank -%}
+            <img loading="lazy" class="video-wrapper__poster-image" loading="lazy" sizes="(max-width: 740px) calc(100vw - 24px * 2), var(--container-max-width)" {% render 'image-attributes', image: block.settings.image, sizes: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800' %}>
+          {%- else -%}
+            {{- 'lifestyle-1' | placeholder_svg_tag: 'video-wrapper__poster-image placeholder-background' -}}
+          {%- endif -%}
+  -->
+  
+          <div class="video-wrapper__poster-content {% if block.settings.background_type != 'boxed' %}content-box content-box--large content-box--text-center{% endif %}">
+            {%- unless block.settings.autoplay -%}
+              <button type="button" class="video-wrapper__play-button video-wrapper__play-button--large video-wrapper__play-button--ripple" title="{{ 'general.accessibility.play_video' | t | escape }}">
+                {%- render 'icon' with 'play', width: 72, height: 72 -%}
+              </button>
+            {%- endunless -%}
+
+            {%- if block.settings.background_type != 'boxed' -%}
+              {{- section_header -}}
+            {%- endif -%}
+          </div>
+
+       
+        </div>
+
+        <template>
+          <!--
+          {%- if block.settings.video_url.type == 'youtube' -%}
+            <iframe title="{{ block.settings.title | escape }}" src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?playsinline=1&autoplay=1{% if block.settings.autoplay %}&controls=0&mute=1&loop=1{% endif %}&playlist={{ block.settings.video_url.id }}&enablejsapi=1&rel=0&modestbranding=1&origin={{ 'https://' | append: request.host | url_encode }}" allow="autoplay; encrypted-media" allowfullscreen="allowfullscreen"></iframe>
+            {%- elsif block.settings.video_url.type == 'vimeo' -%}
+            <iframe title="{{ block.settings.title | escape }}" src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=1&autopause=1{% if block.settings.autoplay %}&background=1&loop=1&muted=1{% endif %}&transparent=0&responsive=1&portrait=0&title=0&byline=0&color={{ settings.text_color | remove_first: '#' }}" allow="autoplay; encrypted-media;" allowfullscreen="allowfullscreen"></iframe>
+          {%- endif -%}
+          -->
+   
+        </template>
+      </external-video>
+{% endif %}   
+    </div>
+  {%- endcapture -%}
+
+  {%- if block.settings.background_type == 'boxed' -%}
+    <div class="section__color-wrapper">
+      <div class="container">
+        <div
+          {% unless blends_with_background %}
+            class="vertical-breather"
+          {% endunless %}
+        >
+          {{- section_header -}}
+          {{- video_content -}}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    {{- video_content -}}
+  {%- endif -%}
+</section>
+</div>
+{% endfor %}
+
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Video Slider",
+  "class": "shopify-section--video",
+  "settings": [
+    ],
+  "blocks":[
+    {
+      "type":"slider",
+      "name":"slide",
+      "settings":[
+        {
+      "type": "checkbox",
+      "id": "video_enble",
+      "label": "Video Enble",
+      "default": true
+    },
+    {
+      "type":"text",
+      "id":"video_link",
+      "label":"Video link",
+      "info":"For mp4 video "
+    },
+     {
+      "type":"text",
+      "id":"video_link2",
+      "label":"Video link",
+      "info":"For webm video"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["vimeo", "youtube"],
+      "label": "Video",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Select Product"
+    },
+    {
+      "type":"text",
+      "id":"video_cta_heading",
+      "label":"CTA Text Heading"
+    },
+    {
+      "type":"text",
+      "id":"available_soon",
+      "label":"Available Soon Tag Line",
+      "default":"Available From </br>Nov 6 at 11:00 am GST"
+    },    
+    {
+      "type":"text",
+      "id":"video_cta_content",
+      "label":"CTA Text Content"
+    },
+    {
+      "type":"text",
+      "id":"video_cta_btn_label1",
+      "label":"video_cta_btn label1"
+    },
+    {
+      "type":"text",
+      "id":"video_cta_btn_link1",
+      "label":"video_cta_btn link1"
+    },
+    {
+      "type":"text",
+      "id":"video_cta_btn_label2",
+      "label":"video_cta_btn label2"
+    },
+    {
+      "type":"text",
+      "id":"video_cta_btn_link2",
+      "label":"video_cta_btn link2"
+    },
+        {
+      "type":"text",
+      "id":"classname",
+      "label":"class name"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Cover image",
+      "info": "2000 x 1125px .jpg recommended. Required if you turn off autoplay."
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Video mode",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "video_size",
+      "label": "Video size",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Original ratio"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "info": "Video is muted automatically to allow autoplay.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)",
+      "info": "Only used for boxed background."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Slider"
+    }
+  ]
+}
+{% endschema %}

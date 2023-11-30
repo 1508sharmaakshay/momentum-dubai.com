@@ -1,0 +1,379 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.text_background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_block_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_block_background = section.settings.text_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+    --section-block-background: {{ section_block_background.red }}, {{ section_block_background.green }}, {{ section_block_background.blue }};
+  }
+
+  .shopify-section--newsletter .image-with-text-block__image-wrapper{
+    background: #fff;
+  }
+  .shopify-section--newsletter .image-with-text-block__image-wrapper svg{
+    opacity:0!important;
+  }
+  .shopify-section--newsletter .image-with-text-block{
+    min-height: auto;
+  }
+  .shopify-section--newsletter .image-with-text-block__content{
+    background: #2e67a0;
+    color: #171717;
+    width:100%;
+    margin: 50px 0 -75px 0!important;
+    padding: 75px 100px 80px 100px;
+  }
+
+  .shopify-section--newsletter .image-with-text-block__content .heading{
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .shopify-section--newsletter .image-with-text-block__content .heading--small{
+    text-transform: capitalize;
+    font-family: var(--heading-font-family)!important;
+    letter-spacing:2px;
+  }
+  .shopify-section--newsletter .image-with-text-block__content p{
+    font-size: 45px;
+    margin: 0;
+    display: inline-block;
+    width: 60%;
+    line-height: 1.2;
+    padding-right: 110px;
+    font-family: var(--heading-font-family);
+  }
+  .shopify-section--newsletter .image-with-text-block__content form{
+    width: 40%;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+  }
+  .newsletter__form .input-row{
+    display:block;
+  }
+  .newsletter__form .input-row .input__label{
+    background: #2e67a0;
+    color: #171717;
+    font-size: 16px;
+    font-family: var(--heading-font-family)!important;
+  }
+  .newsletter__form .input-row .input__field{
+    border: 2px solid rgba(var(--text-color),1);
+    box-shadow: none;
+    font-family: var(--heading-font-family)!important;
+  }
+  .newsletter__form .input button{
+    width: auto;
+    background: #171717;
+    color: #fff;
+    font-weight:normal;
+    text-transform: initial;
+    font-size: 20px;
+    letter-spacing: 0;
+    margin-top: 20px;
+    line-height: .5;
+    font-family: var(--heading-font-family)!important;
+  }
+
+ 
+
+section.section_newsletter .button.button--primary{
+  background:none;
+  background:#171717;
+  border: 1px solid #171717;
+  color: #fff;
+}
+
+section.section_newsletter .button.button--primary:hover{
+  background:none;
+  color: #171717;
+}  
+
+
+  /* new-css */
+
+
+.email-collection-form {
+    width: 39%;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+}
+.email-collection-form .input-row {
+    display: block;
+}
+.email-collection-form .input-row .input {
+    position: relative;
+}
+.email-collection-form .input-row .input label.input__label {
+    background: #2e67a0;
+    color: #171717;
+    font-size: 16px;
+    font-family: var(--heading-font-family)!important;
+}
+.email-collection-form .input-row .input button#nextButton {
+    width: auto;
+    font-size: 20px;
+    margin-top: 20px;
+    line-height: .5;
+    font-family: var(--heading-font-family)!important;
+}  
+  .email-collection-form .input-row .input input#email {
+    border: 2px solid rgba(var(--text-color),1);
+    box-shadow: none;
+    font-family: var(--heading-font-family)!important;
+}
+
+@media screen  and (max-width: 999px) {
+  .shopify-section--newsletter .image-with-text-block__content .email-collection-form{ width: 100%!important;padding-top: 30px; }
+}
+</style>
+
+<section class="section section--flush {{ section.settings.customclassname }}">
+  <image-with-text-block {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="image-with-text-block image-with-text-block--small image-with-text-block--cover">
+    <div class="image-with-text-block__image-wrapper">
+      {%- if section.settings.image != blank -%}
+        <img class="image-with-text-block__image" {% if section.settings.reveal_on_scroll %}reveal{% endif %} loading="lazy" sizes="100vw" {% render 'image-attributes', image: section.settings.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' %}>
+      {%- else -%}
+        {%- capture image_classes -%}image-with-text-block__image image-with-text-block__image--placeholder placeholder-background{%- endcapture -%}
+
+        {%- if section.settings.reveal_on_scroll -%}
+          {{- 'lifestyle-1' | placeholder_svg_tag: image_classes | replace: '<svg', '<svg reveal' -}}
+        {%- else -%}
+          {{- 'lifestyle-1' | placeholder_svg_tag: image_classes -}}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <div class="container container--flush">
+      {%- assign text_position = section.settings.text_position | split: '_' | last -%}
+
+      <div {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="image-with-text-block__content image-with-text-block__content--tight content-box content-box--small content-box--text-{{ section.settings.text_alignment}} content-box--{{ text_position }} text-container">
+        {%- if section.settings.subheading != blank -%}
+          <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.content != blank -%}
+          {{- section.settings.content -}}
+        {%- endif -%}
+
+        {%- assign newsletter_id = 'newsletter-' | append: section.id -%}
+{% comment %}
+        {%- form 'customer', id: newsletter_id, class: 'form newsletter__form' -%}
+          {%- if form.posted_successfully? -%}
+            <script>
+              window.addEventListener('DOMContentLoaded', () => {
+                if (history.scrollRestoration) {
+                  history.scrollRestoration = 'manual'; // Prevent the browser to scroll on captcha page
+                }
+
+                document.getElementById('shopify-section-{{ section.id }}').scrollIntoView();
+              });
+            </script>
+
+            <div class="form__banner banner banner--success">
+              <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+              <p class="banner__content">{{ 'general.newsletter.success' | t }}</p>
+            </div>
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="form__banner banner banner--error">
+                <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+                <p class="banner__content">{{ form.errors.messages['email'] }}</p>
+              </div>
+            {%- endif -%}
+
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="hidden" name="contact[context]" value="{{ newsletter_id }}">
+
+            <div class="input-row">
+              <div class="input">
+                <input type="email" id="newsletter[{{ section.id }}][contact][email]" name="contact[email]" class="input__field" required>
+                <label for="newsletter[{{ section.id }}][contact][email]" class="input__label">{{ 'general.newsletter.email' | t }}</label>
+              </div>
+
+              <div class="input">
+                <button type="submit" is="loader-button" class="button button--primary">{{ 'general.newsletter.subscribe' | t }}</button>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+        {% endcomment %}
+
+          <div class="email-collection-form">
+    <div class="input-row">
+      <div class="input">
+        <input type="email" id="email" class="input__field emailg" required>
+        <label for="newsletter" class="input__label">{{ 'general.newsletter.email' | t }}</label>
+         </div>
+        <div class="input">
+        <button class="button button--primary" id="nextButton">Next</button>
+           </div>
+    </div>
+    </div>
+        
+      </div>
+    </div>
+  </image-with-text-block>
+</section>
+
+   <script>
+          $(document).ready(function() {
+            // Add a click event listener to the "Next" button
+            $("#nextButton").click(function() {
+                // Get the entered email
+                var enteredEmail = $(".emailg").val();
+
+                // Store the email in session storage (you can also use cookies or local storage)
+                sessionStorage.setItem("userEmail", enteredEmail);
+
+                // Redirect to the next page
+                window.location.href = "/pages/contactus#dynamic";
+            });
+        });
+    </script>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "shopify-section--newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "customclassname",
+      "label": "customclassname",
+      "default": "customclassname"
+    },    
+    {
+      "type": "paragraph",
+      "content": "Customers who subscribe will have their email address added to the \"accepts marketing\" [customer list](/admin/customers?query=&accepts_marketing=1)."
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal_on_scroll",
+      "label": "Reveal on scroll",
+      "info": "Show animation when section becomes visible.",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "2000 x 980px .jpg recommended"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subscribe to our newsletter"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Promotions, new products and sales. Directly to your inbox.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Desktop text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_background",
+      "label": "Text background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

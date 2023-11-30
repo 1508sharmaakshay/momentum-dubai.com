@@ -1,0 +1,815 @@
+{%- comment -%}
+------------------------------------------------------------------------------------------------------------------------
+NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing this theme as much as we did for
+  developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
+  hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
+  all events, dependencies...) in the "custom.js" file, located in the Assets folder.
+------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<!doctype html>
+<!-- testing -->
+{%- assign direction = 'ltr' -%}
+{%- case request.locale.iso_code -%}
+  {%- when 'ar' or 'arc' or 'dv' or 'fa' or 'ha' or 'he' or 'kwh' or 'ks' or 'ku' or 'ps' or 'ur' or 'yi' -%}
+    {%- assign direction = 'rtl' -%}
+{%- endcase -%}
+
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ direction }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="{{ settings.header_background }}">
+
+    <title>{% if page_title == blank %}{{ shop.name }}{% else %}{{ page_title }}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% endif %}</title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+ 
+    {% if handle contains 'service-center-walk-in' %}
+    <meta name="robots" content="noindex, nofollow">
+    {% endif %}
+    
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
+    {%- endif -%}
+
+    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {%- unless settings.heading_font.system? and settings.text_font.system? -%}
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {%- comment -%}Preload important resources{%- endcomment -%}
+    <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
+    <link rel="preload" as="style" href="{{ 'custom.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
+
+    {%- comment -%}
+      IMPLEMENTATION NOTE: for improving performance, Focal tries to preload images on known pages (such as blog page,
+      product or collection pages). In order to keep a main JS file size minimal, the theme also lazyloads non-essential
+      libraries (such as PhotoSwipe or Flickity) and only loads them on demand.
+    {%- endcomment -%}
+    {%- if request.page_type == 'product' -%}
+      {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
+
+      <link rel="preload" as="fetch" href="{{ product.url }}.js" crossorigin>
+      <link rel="preload" as="image" imagesizes="(max-width: 999px) calc(100vw - 48px), 640px" imagesrcset="{% render 'image-attributes', image: selected_media, sizes: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', sizes_only: true %}">
+      {%- if product.media.size > 1 -%}
+        <link rel="preload" as="script" href="{{ 'flickity.js' | asset_url }}">
+      {%- endif -%}
+    {%- elsif request.page_type == 'collection' and collection.image -%}
+      <link rel="preload" as="image" media="(max-width: 740px)" imagesizes="100vw" imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '400,500,600,700,800,900,1000', height_constraint: 600, crop: 'center', sizes_only: true %}">
+      <link rel="preload" as="image" media="(min-width: 741px)" imagesizes="100vw" imagesrcset="{% render 'image-attributes', image: collection.image, sizes: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600', sizes_only: true %}">
+    {%- endif -%}
+
+
+    {% render 'social-meta-tags' %}
+    {% render 'microdata-schema' %}
+    {% render 'css-variables', direction: direction %}
+    {% render 'js-variables', direction: direction %}
+
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+<link rel="stylesheet" as="style" href="{{ 'custom.css' | asset_url }}">
+<link rel="stylesheet" as="style" href="{{ 'ts-mobile-filter.css' | asset_url }}">
+    <script src="{{ 'vendor.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+    <script src="{{ 'intlTelInput.min.js' | asset_url }}" ></script>
+<!-- <script src="https://cdn.tutorialjinni.com/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>     -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+
+<script>
+    $(document).ready(function() {
+  $(".content").html(function(){
+  var text= $(this).text().trim().split(" ");
+  var last = text.pop();
+  return text.join(" ") + (text.length > 0 ? " <span class='lstword'>" + last + "</span>" : last);
+});
+      });
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyBackgrounds = [].slice.call(document.querySelectorAll(".slider1img"));
+
+  if ("IntersectionObserver" in window && "IntersectionObserverEntry" in window && "intersectionRatio" in window.IntersectionObserverEntry.prototype) {
+    let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          lazyBackgroundObserver.unobserve(entry.target);
+        }
+      });
+    });
+
+    lazyBackgrounds.forEach(function(lazyBackground) {
+      lazyBackgroundObserver.observe(lazyBackground);
+    });
+  }
+});
+  
+</script>
+    <script>
+$(document).ready(function() {
+
+    sessionStorage.clear();
+
+});
+</script>
+
+   {{ content_for_header }}
+<style>
+
+@font-face {
+    font-family: 'rector-regular';
+    src: url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-regular.woff2?v=1666850318') format('woff2'),
+        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-regular.woff?v=1666850283') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+            @font-face {
+                font-family: 'rector-italic';
+                    src: 
+                       url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-italic.woff2?v=1666850384') format('woff2'),
+                       url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-italic.woff?v=1666850353') format('woff');
+            }
+            @font-face {
+                font-family: 'rector-medium';
+                    src: 
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-medium.woff2?v=1666850451') format('woff2'),
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-medium.woff?v=1666850425') format('woff');
+            }
+             @font-face {
+                font-family: 'rector-mediumitalic';
+                    src: 
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-mediumitalic.woff2?v=1666850517') format('woff2'),
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-mediumitalic.woff?v=1666850483') format('woff');
+            }
+           @font-face {
+                font-family: 'rector-bold';
+                    src: 
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-bold.woff2?v=1666850596') format('woff2'),
+                        url('https://cdn.shopify.com/s/files/1/0513/9201/files/rectorweb-bold.woff?v=1666850573') format('woff');
+            }
+
+</style>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" as="style" href="{{ 'ts-filter.css' | asset_url }}">
+<!-- Date Picker Style Start-->
+    <link rel="stylesheet" href="{{ 'jquery-ui.css' | asset_url }}">
+<!-- Date Picker Style End-->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+  <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-28HTW4RRKH"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-28HTW4RRKH');</script>
+  
+  </head>
+
+  {%- assign feature_classes = '' -%}
+
+  {%- if settings.show_image_zoom -%}
+    {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
+  {%- endif -%}
+
+  <body class="bodyactive hea{% if template.suffix == 'new-landing-page' %}momentum-is-moving{% endif %} {{ page.handle }} no-focus-outline {{ feature_classes }} home{{ template.name }} cstm-{{ collection.handle }} " data-instant-allow-query-string>
+  
+ {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
+    <svg class="visually-hidden">
+      <linearGradient id="rating-star-gradient-half">
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))" />
+        <stop offset="50%" stop-color="rgb(var(--product-star-rating))" stop-opacity="0.4" />
+      </linearGradient>
+    </svg>
+
+    <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
+    <loading-bar class="loading-bar"></loading-bar>
+
+    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+      {%- section 'announcement-bar' -%}
+      {%- section 'popup' -%}
+      {%- section 'header' -%}
+
+      {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
+        {%- section 'mini-cart' -%}
+      {%- endunless -%}
+    {%- endif -%}
+  
+
+    <div id="main" role="main" class="anchor">
+      {%- comment -%}
+      IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
+        by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
+        here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
+      {%- endcomment -%}
+      {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
+        {%- assign active_filters_count = 0 -%}
+
+        {%- if request.page_type == 'collection' -%}
+          {%- assign filters = collection.filters -%}
+        {%- else -%}
+          {%- assign filters = search.filters -%}
+        {%- endif -%}
+
+        {%- for filter in filters -%}
+          {%- if filter.type == 'list' -%}
+            {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
+          {%- elsif filter.type == 'price_range' and filter.min_value.value or filter.max_value.value -%}
+            {%- assign active_filters_count = active_filters_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign is_toolbar_collapsed = false -%}
+
+        {%- if request.page_type == 'search' and search.results.first.object_type != 'product' and search.results_count > 0 -%}
+          {%- assign is_toolbar_collapsed = true -%}
+        {%- endif -%}
+
+
+      {%- endif -%}
+
+      {{ content_for_layout }}
+
+      {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == 'gift_card' -%}
+        {%- section 'static-text-with-icons' -%}
+        {%- section 'static-newsletter' -%}
+      {%- endunless -%}
+    </div>
+
+          {% if template.suffix == 'new-landing-page' %}
+ {%- section 'footer-landing' -%}
+            {% else %}
+    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+      {%- section 'footer' -%}
+    {%- endif -%}
+  {%- endif -%}
+  
+{% include 'swymSnippet' %}
+
+
+           <script>
+            
+             
+      $(document).ready(function(){
+        //$(".cstm-reset").trigger('click');
+        $(".cstm-reset").click(function(){
+          var pathname = window.location.pathname;
+          var filename = pathname.split('/');
+          document.location = "/collections/"+ filename[2] +"/availability_available";
+          // $(".cf-select").prop('selectedIndex', 0);
+          // $('.cf-select option[value="availability_available"]').prop('selected',true);
+
+
+        });
+        $(".accordionItemContent").hide();
+        $('.accordionItemHeading').click(function(){
+
+          var isActive = $(this).hasClass("active");
+          
+          $('.accordionItemHeading').removeClass('active')
+          if (!isActive) {
+            $(this).toggleClass('active');
+         
+          }
+          $(this).next().slideToggle('fast');     
+          $(".accordionItemContent").not($(this).next()).slideUp('fast');
+
+        });
+
+        $('.cstm-tab ul.tabs li').click(function(){
+          var tab_id = $(this).attr('data-tab');
+          $('.cstm-tab ul.tabs li').removeClass('current');
+          $('.tab-content').removeClass('current');
+          $(this).addClass('current');
+          $("#"+tab_id).addClass('current');
+        });
+
+      });
+{%- if product.media.size > 1 -%}
+      var $carousel = $('.products-test-slider').flickity();
+
+      $('.TabList__Item').on( 'click', function() {
+        // show
+        $carousel.show()
+        // trigger resize method after showing
+        .flickity('resize');
+      });
+             {% endif %}
+    </script>
+    
+    <script>
+    	/*const $select = document.getElementsByClassName('CurrencySelector__Select ')[1];
+  		$select.value = 'USD';
+        $select.getElementsByTagName('option')[1].selected = 'selected';
+        
+        console.log( $(".CurrencySelector__Select")[1]);
+      	
+		 $(".CurrencySelector__Select")[1].change();*/
+    </script>
+    
+  
+{% include 'swymSnippet' %}
+
+<!-- -----------------------------------#Phone style START--------------------------------------------------- -->
+  <script>
+    $(document).ready(function() {
+        var countryCode = $('.iti__selected-flag').attr('title');
+        var countryCode = countryCode.replace(/[^0-9]/g,'')
+        $('#phone').val("");
+        $('#phone').val("+"+countryCode+""+ $('#phone').val());
+    });
+  </script>
+  
+<script>
+ $(document).ready(function() {
+    $('.iti__flag-container').click(function() { 
+      var countryCode = $('.iti__selected-flag').attr('title');
+      var countryCode = countryCode.replace(/[^0-9]/g,'')
+      $('#phone').val("");
+      $('#phone').val("+"+countryCode+""+ $('#phone').val());
+
+   });
+  });
+
+  var btnsr = document.getElementById("contact_form_save");
+  $('#phone').on('change', function() {
+  var countryCode = $('.iti__selected-flag').attr('title');
+  var countryCode = countryCode.replace(/[^0-9]/g,'')
+  if (countryCode == "963" || countryCode == "249" || countryCode == "850" || countryCode == "98" || countryCode == "7" || countryCode == "53") {
+    btnsr.style.display = "none";
+    alert("We are not available in your country");
+  }
+    else {
+  btnsr.style.display = "block";
+}
+    });
+</script>
+<!-- -----------------------------------#Phone style END--------------------------------------------------- -->
+
+<!-- -----------------------------------#Phone2 style START--------------------------------------------------- -->
+  <!-- <script>
+    $(document).ready(function() {
+        var countryCode = $('.iti__selected-flag').attr('title');
+        var countryCode = countryCode.replace(/[^0-9]/g,'')
+        $('#phone2').val("");
+        $('#phone2').val("+"+countryCode+""+ $('#phone2').val());
+    });
+  </script>
+  
+<script>
+ $(document).ready(function() {
+    $('.iti__flag-container').click(function() { 
+      var countryCode = $('.iti__selected-flag').attr('title');
+      var countryCode = countryCode.replace(/[^0-9]/g,'')
+      $('#phone2').val("");
+      $('#phone2').val("+"+countryCode+""+ $('#phone2').val());
+
+   });
+  });
+
+  var btnsr = document.getElementById("contact_form_save");
+  $('#phone2').on('change', function() {
+  var countryCode = $('.iti__selected-flag').attr('title');
+  var countryCode = countryCode.replace(/[^0-9]/g,'')
+  if (countryCode == "963" || countryCode == "249" || countryCode == "850" || countryCode == "98" || countryCode == "7" || countryCode == "53") {
+    btnsr.style.display = "none";
+    alert("We are not available in your country");
+  }
+    else {
+  btnsr.style.display = "block";
+}
+    });
+</script> -->
+
+<!-- -----------------------------------#Phone2 style END--------------------------------------------------- -->
+
+
+
+
+
+
+<!-- -----------------------------------#Phone1 style START--------------------------------------------------- -->
+
+  <!-- <script>
+    $(document).ready(function() {
+        var countryCode = $('.iti__selected-flag').attr('title');
+        var countryCode = countryCode.replace(/[^0-9]/g,'')
+        $('#phone1').val("");
+        $('#phone1').val("+"+countryCode+""+ $('#phone1').val());
+    });
+  </script>
+  
+<script>
+ $(document).ready(function() {
+    $('.iti__flag-container').click(function() { 
+      var countryCode = $('.iti__selected-flag').attr('title');
+      var countryCode = countryCode.replace(/[^0-9]/g,'')
+      $('#phone1').val("");
+      $('#phone1').val("+"+countryCode+""+ $('#phone1').val());
+
+   });
+  });
+
+  var btnsr = document.getElementById("contact_form_save");
+  $('#phone1').on('change', function() {
+  var countryCode = $('.iti__selected-flag').attr('title');
+  var countryCode = countryCode.replace(/[^0-9]/g,'')
+  if (countryCode == "963" || countryCode == "249" || countryCode == "850" || countryCode == "98" || countryCode == "7" || countryCode == "53") {
+    btnsr.style.display = "none";
+    alert("We are not available in your country");
+  }
+    else {
+  btnsr.style.display = "block";
+}
+    });
+</script> -->
+<!-- -----------------------------------#Phone1 style END--------------------------------------------------- -->
+
+
+<script>
+  $(window).scroll(function() {
+   $(".logo").removeClass("viewport-bottom");
+
+   if($(window).scrollTop() + $(window).height() > ($(document).height() - 300) ) {
+       //you are at bottom
+       $("body").removeClass("page-scrolled");
+     
+     
+   }
+});
+</script>
+
+<script>
+  $(document).ready(function(){
+      $('#myselection').on('change', function() {
+        $('#showOne').css('display', 'none');
+        $('#showTwo').css('display', 'none');
+        if ( $(this).val() === 'Yes' ) {
+          $('#showOne').css('display', 'block');
+        }
+        if ( $(this).val() === 'No' ) {
+          $('#showTwo').css('display', 'block');
+        }
+      }); 
+   
+  });   
+</script>  
+
+<script>
+    $(function() {
+        $(".phone_fields input[type='tel']").on('input', function(e) {
+            $(this).val('+'+ $(this).val().replace(/[^\d]/g,''));
+        });
+              $("#buddol1").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^\d]/g,''));
+        });
+       
+        $("#prex").on('input', function(e) {
+            $(this).val('$ '+ $(this).val().replace(/[^\d]/g,''));
+        });
+     
+    });
+   
+</script>
+  <script>
+
+    $("#buddol1").focusout(function(){
+  var dolval = document.getElementById("buddol1").value;
+  document.getElementById("buddol").value = (dolval*3.6725).toFixed();
+ });  
+    $('form#contact_form').submit(function(){
+    $(this).find(':input[type=submit]').prop('disabled', true);
+});
+        $('form#price-custom-form').submit(function(){
+    $(this).find(':input[type=submit]').prop('disabled', true);
+});
+  </script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+    $('.team1 .ProductList').slick({
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      arrows: true,
+      dots:false,
+      centerMode: true,
+      prevArrow: '<button class="slide-arrow prev-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>',
+      nextArrow: '<button class="slide-arrow next-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>'  
+    });
+</script>
+
+<style>
+.videoslider
+  {
+      -webkit-transition: opacity 2000s ease-in-out;
+    -moz-transition: opacity 2000s ease-in-out;
+    -ms-transition: opacity 2000s ease-in-out;
+    -o-transition: opacity 2000s ease-in-out;
+     opacity: 1;
+  }
+  
+</style>
+         <script>
+     $('.videoslider').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: false,
+     autoplaySpeed: 5000,
+      speed: 1000,
+      pauseOnHover:false,
+      arrows: false,
+      fade: false,
+    slide: 'div',
+    cssEase: 'linear',
+      dots:true
+      //prevArrow: '<button class="slide-arrow prev-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>',
+      //nextArrow: '<button class="slide-arrow next-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>'  
+    });
+
+              $('.videoslider').on('afterChange', function() {
+    if ($('.cstmslider-2').hasClass('slick-active')) {
+      $('.header').removeClass('my-div-active');
+       $('body').removeClass('bodyactive');
+$('.header__wrapper').removeClass('glownav');
+
+    } else {
+         
+        $('.header__wrapper').addClass('glownav');
+    }
+  });
+
+              $('.videoslider').on('beforeChange', function() {
+    if ($('.cstmslider-2').hasClass('slick-active')) {
+        $('.banner-gradint').css('opacity', '0'); 
+     $('.header').addClass('my-div-active');
+       $('body').addClass('bodyactive');
+        $('.homeindex .header__logo .header__logo_inn').addClass('logoanim');
+      $('.onlyani').addClass('onlyanimwhite');
+  
+    } else {
+       $('.banner-gradint').css('opacity', '1'); 
+  $('.header').removeClass('my-div-active');
+       $('body').removeClass('bodyactive');
+        $('.homeindex .header__logo .header__logo_inn').removeClass('logoanim');
+       $('.onlyani').removeClass('onlyanimwhite');
+   
+    }
+  });
+
+ 
+</script>
+
+          
+          <script>
+            $('.videoslider').on('beforeChange', function() {
+    if ($('.cstmslider-1').hasClass('slick-active')) {
+      $('.onlyani').addClass('onlyanimblack');
+    $('.homeindex .header__logo_inn').removeClass('logoanimbg');
+        $('.header__wrapper').removeClass('glownav');
+    } else {
+       $('.onlyani').removeClass('onlyanimblack');
+    $('.header__wrapper').addClass('glownav');
+    }
+  });
+          </script>
+
+            <script>
+            $('.videoslider').on('beforeChange', function() {
+    if ($('.cstmslider-3').hasClass('slick-active')) {
+
+        $('.header__wrapper').addClass('glownav');
+    } else {
+   $('.header__wrapper').removeClass('glownav');
+    
+    }
+  });
+          </script>
+            <script>
+            $('.videoslider').on('afterChange', function() {
+    if ($('.cstmslider-3').hasClass('slick-active')) {
+
+        $('.header__wrapper').removeClass('glownav');
+    } else {
+
+    
+    }
+  });
+          </script>
+           
+
+<script>
+//   $(document).ready(function(){
+// $('.checkbox-container:first-child input.checkbox').click();});
+</script>
+<script>
+$('select.Form__Input').focus(function(){
+    $(this).siblings('.label2').css('display','block');
+})
+$('select.Form__Input').focusout(function(){
+    $(this).siblings('.label2').css('display','none');
+})
+$('#phone').focus(function(){
+    $(this).parents('.phone_fields').find('.label2').css('display','block');
+})
+$('#phone').focusout(function(){
+    $(this).parents('.phone_fields').find('.label2').css('display','none');
+})
+$('.iti__selected-flag').focus(function(){
+    $(this).parents('.phone_fields').find('.label2').css('display','block');
+})
+$('.iti__selected-flag').focusout(function(){
+    $(this).parents('.phone_fields').find('.label2').css('display','none');
+})
+$('.Form__Input').click(function(){
+    $(this).parents('.custom-file').append('<p class="label2">Image(s) Upload</p>');
+})
+$('body').mouseup(function(){
+    $('p.label2').hide();
+})
+$('#megascroll').slick({
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  infinite:true,
+  arrows:true,
+  dots:false,
+  prevArrow: '<button class="slick-prev" style="display: flex;"><svg focusable="false" width="17" height="14" class="icon icon--nav-arrow-left  icon--direction-aware " viewBox="0 0 17 14"><path d="M17 7H2M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.3" fill="none"></path></svg></button>',
+  nextArrow: '<button class="slick-next"><svg focusable="false" width="17" height="14" class="icon icon--nav-arrow-right  icon--direction-aware " viewBox="0 0 17 14"><path d="M0 7h15M9 1l6 6-6 6" stroke="currentColor" stroke-width="1.3" fill="none"></path></svg></button>'  ,
+  responsive: [
+    {
+      breakpoint: 1350,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+
+
+
+// $('button.list-collections__arrow.prev-next-button.prev-next-button--prev').click(function(){
+//    $('button.slick-prev.slick-arrow').click();
+// });
+// $('button.list-collections__arrow.prev-next-button.prev-next-button--next').click(function(){
+//    $('button.slick-next.slick-arrow').click();
+// });
+// if($('button.slick-prev.slick-arrow').hasClass('slick-disabled')){
+//     $('button.list-collections__arrow.prev-next-button.prev-next-button--prev').addClass('slick-disabled');
+// }
+// else{
+//     $('button.list-collections__arrow.prev-next-button.prev-next-button--prev').removeClass('slick-disabled');
+// }
+
+
+  
+</script>
+          {% render 'collection-filter-v2' %}
+<script>
+$(document).ready(function(){
+	$(".ts-mobile-filter-close").click(function(){
+		$("#menu-opener").prop('checked',false)
+	});
+});
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default" ></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzaw8EEZN_fBZ_zOWcIl510pg6uCg2Kzk&callback=initMap&v=weekly" defer></script>
+ <script>
+var mlwStyles =[
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    }
+];
+    let map;
+
+function initMap() {
+  const myLatLng = { lat: 25.2123571118058, lng: 55.28057934852917 };
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: myLatLng,
+    zoom: 15,
+    styles: mlwStyles,
+  });
+   new google.maps.Marker({
+    position: myLatLng,
+    map,
+    title: "Momentum Dubai",
+     label:"Momentum Dubai",
+  });
+}
+
+window.initMap = initMap;
+  </script>
+<script>
+
+  //   $('.ts-featured-slider-mobile').slick({
+  //     slidesToShow: 2,
+  //     slidesToScroll: 3,
+  //     arrows: true,
+  //     dots:false,
+  //     centerMode: false,
+  //     prevArrow: '<button class="slide-arrow prev-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>',
+  //     nextArrow: '<button class="slide-arrow next-arrow"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"><path d="M3335 4386 c-16 -8 -420 -405 -897 -883 -942 -943 -891 -886 -873 -981 6 -33 104 -134 883 -914 953 -953 895 -901 989 -883 49 9 109 69 118 118 18 94 63 43 -808 915 l-802 802 802 803 c711 711 802 806 808 840 24 133 -101 237 -220 183z"/></g></svg></button>',
+	 //  responsive: [
+  //   {
+  //     breakpoint: 99999,
+  //     settings: "unslick"
+  //   },
+  //   {
+  //     breakpoint: 767,
+  //     settings: {
+  //       centerPadding: '40px',
+  //     }
+  //   }
+  // ]
+  //   });
+  
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<style>
+  #map {
+  height: 100%;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<script>
+(function(w,d,s,c,r,a,m){
+w['KiwiObject']=r;
+w[r]=w[r] || function () {
+(w[r].q=w[r].q||[]).push(arguments)};
+w[r].l=1*new Date();
+a=d.createElement(s);
+m=d.getElementsByTagName(s)[0];
+a.async=1;
+a.src=c;
+m.parentNode.insertBefore(a,m)
+})(window,document,'script',"https://app.interakt.ai/kiwi-sdk/kiwi-sdk-17-prod-min.js?v="+ new Date().getTime(),'kiwi');
+window.addEventListener("load",function () {
+kiwi.init('', 'ftjTpo6r66iVeDU26DhxKvmPvdkeptF3', {});
+});
+</script>
+
+
+<script>
+$("body").click(function() {
+   if ($("#desktop-menu-4").is(":visible")) {
+       $('#desktop-menu-4').css({'visibility' : 'hidden', 'opacity' : '0'});
+   }
+});
+$(document).on('click', '.has-dropdown', function(){
+  var t = $(this).data('item-title');
+  if( t == 'Accessories' ){
+    $('#desktop-menu-4').css({'visibility' : 'visible', 'opacity' : '1'});
+  }else{
+    $('#desktop-menu-4').css({'visibility' : 'hidden', 'opacity' : '0'});
+  }
+});  
+
+</script>
+          
+{% include "scm-currency-switcher" %}
+{% include "scm-currency" %}
+</body>
+</html>

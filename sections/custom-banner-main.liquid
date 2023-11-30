@@ -1,0 +1,167 @@
+<style>
+    .maincstm-ban {
+        padding-top: 30px;
+    }
+    .maincstm-ban .cstm-banner img {
+        width: 100%;
+    }
+        .maincstm-ban .cstm-banner {
+        position: relative;
+    }
+    .maincstm-ban .cont-info {
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        background: #487748;
+        padding: 45px;
+        max-width: 450px;
+    }
+    
+    .maincstm-ban .cont-info h2.title {
+        font-size: 45px;
+        color:#000;
+        margin-bottom: 40px;
+        font-weight: 100;
+        font-style: var(--heading-font-style);
+        color: rgb(var(--heading-color));
+        font-family: rector-regular;
+        line-height: 1.1111111111;
+    }
+    .maincstm-ban.ts-banner2 .cont-info {
+        background: #2e67a0;
+        left: unset;
+        left: 20%;
+    }
+    
+    .maincstm-ban.ts-banner3 .cont-info {
+        background: #ca6019;
+    }
+    .maincstm-ban.ts-banner2 {
+        padding: 0;
+    }
+    .maincstm-ban.ts-banner3 {
+        padding-top: 60px;
+    }
+    @media screen and (max-width: 1024px) {
+        .maincstm-ban .cont-info {
+            left: 22%;
+            max-width: 350px !important;
+        }
+        .maincstm-ban.ts-banner2 .cont-info {
+            right: -17% !important;
+        }
+        .maincstm-ban .cont-info h2.title {
+            font-size: 35px;
+        }
+        .maincstm-ban.ts-banner3 {
+            padding-top: 50px;
+        }
+        .maincstm-ban.ts-banner1 .cont-info , .maincstm-ban.ts-banner3 .cont-info {
+            left: 17% !important;
+        }
+        .maincstm-ban.ts-banner2 {
+            padding-top: 0;
+        }
+    }
+    @media screen and (max-width: 999px) {
+        .maincstm-ban .cont-info h2.title {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .maincstm-ban .cont-info {
+            max-width: 310px;
+            padding: 25px 20px;
+            left: 20%;
+        }
+        .maincstm-ban.ts-banner2 .cont-info {
+            right: -18% !important;
+        }
+        .maincstm-ban.ts-banner1 {
+            margin-top: 110px;
+        }
+        .maincstm-ban.ts-banner1 .cont-info , .maincstm-ban.ts-banner3 .cont-info {
+            left: calc(50% - 28%) !important;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        .maincstm-ban .cstm-banner img {
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .maincstm-ban .cont-info h2.title {
+            font-size: 30px;
+            line-height: 40px;
+        }
+        .maincstm-ban .cont-info {
+            position: unset;
+            transform: unset;
+            margin: auto;
+        }
+    }
+    
+    </style>
+        
+        
+        <div class=" maincstm-ban {{ section.settings.cstmclass }}" >
+          <div class="cstm-banner">
+            {% if section.settings.image != blank %}
+              <img src="{{ section.settings.image | img_url : 'master' }}" loading="lazy">
+            {% endif %}
+            {% if section.settings.label != blank %}
+              <div class="cont-info">
+                <div class="inner">
+                  <h2 class="title">{{ section.settings.title }}</h2>
+                  <a class="button button--primary" href="{{ section.settings.link }}">{{ section.settings.label }}</a>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        
+        {% schema %}
+        {
+          "name": "Home custom banner",
+          "class":"cstm-cstm-banner",
+          "settings": [
+            {
+              "type":"text",
+              "id":"cstmclass",
+              "label":"custom class"
+            },
+            {
+              "type":"image_picker",
+              "id":"image",
+              "label":"Banner"
+            },
+            {
+              "type":"text",
+              "id":"title",
+              "label":"Title"
+            },
+            {
+              "type":"url",
+              "id":"link",
+              "label":"Link"
+            },
+            {
+              "type":"text",
+              "id":"label",
+              "label":"Label"
+            }
+          ],
+          "presets":[
+            {
+              "name": "Home custom banner"
+            }
+          ]
+        }
+        {% endschema %}
+        
+        {% stylesheet %}
+        {% endstylesheet %}
+        
+        {% javascript %}
+        {% endjavascript %}
+        

@@ -1,0 +1,1302 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+ 
+  
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+
+  
+  .service-center-slide-out{ border-left: none; border-right: none; }
+  .service-center-collapsible{
+    background: #f4f4f4;
+    transition: .3s;
+    position:relative
+  }
+  .service-center-active,
+  .service-center-collapsible:hover{
+    background: #fff;
+/*     background-image: url(https://cdn.shopify.com/s/files/1/0657/4122/6243/t/3/assets/svg_arrow.svg?v=1664339043); */
+    background-position: 85% 20px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;     
+    transition: .3s;
+  }
+  .service-center-collapsible::after{
+    content: '';
+    background-image: url(https://cdn.shopify.com/s/files/1/0657/4122/6243/t/3/assets/svg_arrow.svg?v=1664339043);
+    background-position: 85% 20px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    transition: .3s;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+  }
+  .service-center-active::after,
+  .service-center-collapsible:hover::after{
+     opacity: 1;
+  }
+  .service-center-content{
+    padding: 50px 70px;
+  }
+  .service-center-content p{ padding: 0px; }
+  .service-center-flex-item button.inquire{ margin-left: 70px;}
+  
+.inquiry-form {
+    background: transparent;
+    padding: 60px;
+    transition: .5s;
+}
+
+.service-center-flex-item button.inquire{
+    padding: 14px 150px 14px 150px;
+}
+
+.service-center-content{
+  background: transparent;
+}
+
+/*  */
+.servicecenter-inquiry-form #service_request_form{ padding: 0 100px;}
+.servicecenter-inquiry-form h1.Form__Title {
+    color: #171717!important;
+    font-size: 50px;
+    letter-spacing: 0!important;
+    text-align: center;
+    margin-bottom: 60px !important;
+}
+.servicecenter-inquiry-form .Form__FloatingLabel {
+  display:none;
+}
+.servicecenter-inquiry-form .Form__FloatingLabel.shown{ display:block;}
+.servicecenter-inquiry-form .Form__Item{
+    width: 50%;
+    float: left;
+    padding: 0 0px;
+    margin-bottom: 24px;
+}
+
+.servicecenter-inquiry-form .Form__Item:nth-child(odd){
+    padding-left: 20px;
+}
+.servicecenter-inquiry-form .Form__Item:nth-child(even){
+    padding-right: 20px;
+}
+
+.servicecenter-inquiry-form .Form__Item input,
+.servicecenter-inquiry-form .Form__Item select,
+.servicecenter-inquiry-form .Form__Item textarea{
+    height: 50px;
+    border: solid 1px #171717;
+    border-radius: 0px;
+    padding: 0 15px;
+    margin-bottom: 20px;
+    width: 100%; 
+    margin:0px;
+    outline: none!important;
+    box-shadow: none;
+}
+.servicecenter-inquiry-form .Form__Item textarea{
+    resize: none;
+    padding: 5px 15px;
+    height: 125px!important;
+}
+.servicecenter-inquiry-form .iti--allow-dropdown{
+   width: 100%; 
+}
+.iti--separate-dial-code .iti__selected-dial-code{
+  background: #f5f5f5!important;
+}
+.servicecenter-inquiry-form .Form__Item .c-checkbox{
+    position: relative;
+    padding-left: 35px;
+    line-height: 1.2;
+    width: 100%;
+}
+.servicecenter-inquiry-form .Form__Item .c-checkbox input{
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    position: absolute;
+    margin-top: -4px;
+    left: 0;
+}
+ .servicecenter-inquiry-form .ch_box{
+    width: 100%;
+    padding-bottom: 15px;
+    padding-left: 0px!important;
+    padding-right: 20px!important;
+}
+
+.servicecenter-inquiry-form .custom-file{
+    border: solid 1px #171717;
+    margin: 0;
+    height: 50px;
+    justify-content: center;
+    position:relative;
+    padding-left: 20px!important;
+    margin-bottom: 24px;
+}
+
+.servicecenter-inquiry-form .custom-file input{
+  border:none;
+  opacity:0;
+  position: absolute;
+  height: 50px;
+  margin-bottom: 0px;
+  left: 0;
+  z-index: 1;
+}
+.servicecenter-inquiry-form .custom-file label{ padding-top: 10px;}
+.servicecenter-inquiry-form .bt_choose{
+    background-color: #171717;
+    color: #fff;
+    display: inline-block;
+    font-size: 18px;
+    width: 150px;
+    text-align: center;
+    padding: 3px 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.button_wrap{
+  display: inline-block;
+  width:100%;
+  padding: 0px 0px;
+  text-align:center;
+}
+.button_wrap button{
+    border: none;
+    background-color: #171717;
+    color: #fff;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+/* map area */
+.bringfields {
+    display: flex;
+    width: 100%!important;
+    align-items: center!important;    
+    padding: 0!important;
+    clear: both;
+}
+.left_brigfields{
+   flex-basis: 50%;
+  padding-right: 20px;
+}
+.left_brigfields h3{
+  font-size: 36px;
+  font-weight:normal;
+}
+.left_brigfields address{
+  font-style: normal;
+  font-size: 18px;
+}
+.right_brigfields {
+    flex-basis: 50%;
+    height: 250px!important;
+    padding-left: 20px;
+}
+.right_brigfields iframe{
+  height: 100%;
+}
+
+body .servicecenter-inquiry-form .Form__Item:nth-child(odd) {
+    padding-left: 20px !important;
+    padding-right: 0 !important;
+}
+body .servicecenter-inquiry-form .Form__Item:nth-child(even) {
+    padding-right: 20px !important;
+}
+
+.Form__Item.custom-file {
+    width: 100%;
+}
+body .servicecenter-inquiry-form .main_form_cstm .Form__Item:nth-child(odd) {
+    padding-left: 0 !important;
+    width: 100%;
+}
+body .servicecenter-inquiry-form .Form__Item:nth-child(even) .Form__Item.selc-frm {
+    width: 100%;
+    padding-right: 0 !important;
+}
+.servicecenter-inquiry-form .Form__Item select {
+    color: #000;
+}
+.servicecenter-inquiry-form .custom-file label {
+    padding: 10px 15px;
+    display: block;
+}
+p.c-checkbox.submit-text {
+    clear: both;
+}
+button#contact_form_save {
+    border: none;
+    background-color: #171717;
+    color: #fff;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}  
+body .servicecenter-inquiry-form .Form__Item.ch_box:nth-child(odd) {
+    padding-left: 0 !important;
+} 
+section.section.servicecenter-inquiry-form {
+    margin-top: 50px !important;
+}  
+.inn_pickup_fields {
+    display: flex;
+    width: 100%;
+}
+.inn_pickup_fields .left {
+    width: 50%;
+}
+.inn_pickup_fields .right {
+    width: 50%;
+}
+.inn_pickup_fields .left .Form__Item.form_custom1.full_textarea_cstm {
+    padding-left: 0 !important;
+    width: 100%;
+    padding-right: 20px !important;
+}
+.inn_pickup_fields .right .Form__Item {
+    width: 100%;
+}
+.inn_pickup_fields .right  .innr_dddate .Form__Item {
+    width: 50%;
+} 
+div#showOne {
+    clear: both;
+}
+body .servicecenter-inquiry-form .Form__Item.pickins:nth-child(even) {
+    padding-right: 0 !important;
+    padding-left: 20px;
+}
+.inn_pickup_fields .innr_dddate .Form__Item:nth-child(odd) {
+    padding-right: 20px !important;
+}
+.inn_pickup_fields .innr_dddate .Form__Item:nth-child(even) {
+    padding-left: 20px !important;
+    padding-right: 0 !important;
+}
+.main_form_cstm.Form__Item {
+    margin-bottom: 0;
+}
+.Form__Item.pickins,
+.servicecenter-inquiry-form .Form__Item.form_custom1.full_textarea_cstm {
+    margin-bottom: 0;
+}
+#showTwo .bringfields {
+    padding: 0;
+}
+.left_brigfields h3 {
+    font-size: 18px!important;
+    font-weight: 600!important;
+    margin-bottom: 8px;
+}
+.alert.success {
+    background: #171717;
+    text-align: center;
+    line-height: 1.5;
+    padding: 0;
+    min-width: 100%;
+    color: #fff;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'rector-regular'!important;
+    font-size: 20px!important;
+    text-transform: capitalize!important;
+    letter-spacing: normal;
+}
+
+.alert.success img {
+    margin-left: 10px;
+}
+section.servicecenter-inquiry-form h1.Form__Title {
+    margin-bottom: 50px!important;
+}
+.servicecenter-inquiry-form .alert.success {
+    top: -111px;
+}  
+section.section.customclassname a.ts-inquire-btn.ts-inquire-btn-bottom {
+    margin-bottom: 25px !important;
+}
+@media (max-width:999px) {  
+  .left_brigfields h3 {
+      font-size: 20px!important;  
+  }
+  section.section.servicecenter-inquiry-form {
+    margin-top: 60px !important;
+  }
+  .servicecenter-inquiry-form h1.Form__Title {   
+    font-size: 60px;
+  }
+}  
+
+@media (max-width:767px) {
+  .servicecenter-inquiry-form .alert.success {
+    top: -132px;
+}
+  .servicecenter-inquiry-form .Form__Item, .inn_pickup_fields .left, .inn_pickup_fields .right  {
+      width: 100%;
+  }
+  .inn_pickup_fields .left .Form__Item.form_custom1.full_textarea_cstm,
+  body .servicecenter-inquiry-form .Form__Item:nth-child(even) {
+      padding-right: 0 !important;
+  }
+  body .servicecenter-inquiry-form .Form__Item.pickins:nth-child(even),
+  body .servicecenter-inquiry-form .Form__Item:nth-child(odd) {
+      padding-left: 0 !important;
+  }
+  .inn_pickup_fields {
+      flex-wrap: wrap;
+  }
+  .inn_pickup_fields .left {
+    margin: 16px 0;
+  }
+  .inn_pickup_fields .left {
+    margin: 16px 0;
+  }
+  .bringfields {
+      flex-wrap: wrap;
+  }
+  .left_brigfields {
+      flex-basis: 100%;
+      padding-right: 0;
+      margin-top: 10px;
+  }
+  .right_brigfields {
+      flex-basis: 100%;
+      padding-left: 0;
+      margin-top: 20px;
+  }
+  .left_brigfields address {
+    font-size: 15px !important;
+  }
+p.c-checkbox.submit-text {
+    font-size: 15px;
+}
+}
+
+@media (max-width:680px) {
+  .inn_pickup_fields .innr_dddate .Form__Item:nth-child(even) {
+      padding-left: 0 !important;
+  }
+  .inn_pickup_fields .innr_dddate .Form__Item:nth-child(odd) {
+      padding-right: 0 !important;
+  }  
+  .inn_pickup_fields .left {
+      margin: 0;
+  }  
+  .Form__Item.selc-frm {
+    margin-bottom: 5px !important;
+  }
+  .bringfields {
+    padding-top: 0 !important;
+  }
+  .Form__Item.form_custom1.full_textarea_cstm {
+    margin-bottom: 12px !important;
+  }
+  .servicecenter-inquiry-form .Form__Item.custom-file { 
+    padding: 0 10px!important;
+  }
+}
+
+@media (max-width:600px) {
+  .servicecenter-inquiry-form .Form__Item .c-checkbox input {
+      margin-top: 2px;
+  }
+}
+  
+</style>
+
+<section class="{% if section.settings.add_vertical_spacing %}section{% endif %} {% unless blends_with_background or is_boxed %}section--flush{% endunless %} {{section.settings.customclassname}}" id="servicecstmform">
+  <div class="banner-gradint"></div>
+  <div {% if is_boxed %}class="container"{% endif %}>
+    <div class="section__color-wrapper {% if is_boxed %}section__color-wrapper--boxed{% endif %}">
+      <div class="{% unless is_boxed %}container{% endunless %} {% unless blends_with_background %}vertical-breather{% endunless %}">
+          <div class="html">
+            <form name="contact" id="service--form" method="post" action="#" enctype="multipart/form-data">
+  <input type="hidden" name="formname" value="ServiceCenter">
+  <input type="hidden" name="domain" value="momentum-15.myshopify.com">
+  <input type="hidden" value="" name="access_token" id="access_token" />
+  <header class="Form__Header">
+          <h1 class="Form__Title Heading u-h1" style="letter-spacing: .2em; color:white;">Service Request</h1>
+<!--           <p class="Form__Legend">{{ 'customer.register.description' | t }}</p> -->
+        </header>
+  
+      <div class="alert- info-" style="display: none; margin-top: 20px !important;">
+            <strong>Error!</strong> Please fix the error(s) below.
+            <span class="info-message-"></span>
+      </div>
+
+        {%- if form.errors -%}
+          <div class="Form__Alert Alert Alert--error">
+            <ul class="Alert__ErrorList">
+              {%- for field in form.errors -%}
+                {%- if field == 'form' -%}
+                  <li class="Alert__ErrorItem">{{ form.errors.messages[field] }}</li>
+                {%- else -%}
+                  <li class="Alert__ErrorItem"><strong>{{ form.errors.translated_fields[field] }}</strong> {{ form.errors.messages[field] }}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+       <div class="Form__Item custom">
+          <input id="serviceemail" type="email" class="Form__Input bg_color" name="email" aria-label="{{ 'customer.register.email' | t }}" placeholder="{{ 'customer.register.email' | t }} *" required>
+          <label class="Form__FloatingLabel label2">{{ 'customer.register.email' | t }} *</label>  
+      </div>
+      <div class="Form__Item phone_fields">
+            <input id="phone" type="tel" class="Form__Input bg_color" name="phone" aria-label="Phone No." placeholder="Phone No. *" required>
+            <label class="Form__FloatingLabel phnlbl label2 ts-label-block">Phone No. *</label>
+        </div>
+  
+       
+          <div class="Form__Item">
+            <input id="servicefirstname" type="text" class="Form__Input bg_color" name="first_name" aria-label="First Name" placeholder="First Name *" required>
+            <label class="Form__FloatingLabel label2">First Name *</label>
+          </div>
+
+          <div class="Form__Item">
+            <input id="servicelastname" type="text" class="Form__Input bg_color" name="last_name" aria-label="Last Name" placeholder="Last Name *" required>
+            <label class="Form__FloatingLabel label2">Last Name *</label>
+          </div>
+
+       
+      <div class="Form__Item" style="color:white;">
+        <select type="select" class="Form__Input bg_color" name="country" aria-label="Country of Residence" placeholder="Country of Residence">
+          <option value="">Select an option</option>
+          <option value="Albania">Albania</option>
+          <option value="Algeria">Algeria</option>
+          <option value="Andorra">Andorra</option>
+          <option value="Angola">Angola</option>
+          <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+          <option value="Argentina">Argentina</option>
+          <option value="Armenia">Armenia</option>
+          <option value="Australia">Australia</option>
+          <option value="Austria">Austria</option>
+          <option value="Azerbaijan">Azerbaijan</option>
+          <option value="Bahamas">Bahamas</option>
+          <option value="Bahrain">Bahrain</option>
+          <option value="Bangladesh">Bangladesh</option>
+          <option value="Barbados">Barbados</option>
+          <option value="Belarus">Belarus</option>
+          <option value="Belgium">Belgium</option>
+          <option value="Belize">Belize</option>
+          <option value="Benin">Benin</option>
+          <option value="Bhutan">Bhutan</option>
+          <option value="Bolivia">Bolivia</option>
+          <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+          <option value="Botswana">Botswana</option>
+          <option value="Brazil">Brazil</option>
+          <option value="Brunei">Brunei</option>
+          <option value="Bulgaria">Bulgaria</option>
+          <option value="Burkina Faso">Burkina Faso</option>
+          <option value="Burundi">Burundi</option>
+          <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+          <option value="Cabo Verde">Cabo Verde</option>
+          <option value="Cambodia">Cambodia</option>
+          <option value="Cameroon">Cameroon</option>
+          <option value="Canada">Canada</option>
+          <option value="Central African Republic">Central African Republic</option>
+          <option value="Chad">Chad</option>
+          <option value="Chile">Chile</option>
+          <option value="China">China</option>
+          <option value="Colombia">Colombia</option>
+          <option value="Comoros">Comoros</option>
+          <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+          <option value="Costa Rica">Costa Rica</option>
+          <option value="Croatia">Croatia</option>
+          <option value="Cyprus">Cyprus</option>
+          <option value="Czechia (Czech Republic)">Czechia (Czech Republic)</option>
+          <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+          <option value="Denmark">Denmark</option>
+          <option value="Djibouti">Djibouti</option>
+          <option value="Dominica">Dominica</option>
+          <option value="Dominican Republic">Dominican Republic</option>
+          <option value="Ecuador">Ecuador</option>
+          <option value="Egypt">Egypt</option>
+          <option value="El Salvador">El Salvador</option>
+          <option value="Equatorial Guinea">Equatorial Guinea</option>
+          <option value="Eritrea">Eritrea</option>
+          <option value="Estonia">Estonia</option>
+          <option value="Eswatini (fmr. &quot;Swaziland&quot;)">Eswatini (fmr. "Swaziland")</option>
+          <option value="Ethiopia">Ethiopia</option>
+          <option value="Fiji">Fiji</option>
+          <option value="Finland">Finland</option>
+          <option value="France">France</option>
+          <option value="Gabon">Gabon</option>
+          <option value="Gambia">Gambia</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Germany">Germany</option>
+          <option value="Ghana">Ghana</option>
+          <option value="Greece">Greece</option>
+          <option value="Grenada">Grenada</option>
+          <option value="Guatemala">Guatemala</option>
+          <option value="Guinea">Guinea</option>
+          <option value="Guinea-Bissau">Guinea-Bissau</option>
+          <option value="Guyana">Guyana</option>
+          <option value="Haiti">Haiti</option>
+          <option value="Holy See">Holy See</option>
+          <option value="Honduras">Honduras</option>
+          <option value="Hungary">Hungary</option>
+          <option value="Iceland">Iceland</option>
+          <option value="India">India</option>
+          <option value="Indonesia">Indonesia</option>
+          <option value="Iraq">Iraq</option>
+          <option value="Ireland">Ireland</option>
+          <option value="Israel">Israel</option>
+          <option value="Italy">Italy</option>
+          <option value="Jamaica">Jamaica</option>
+          <option value="Japan">Japan</option>
+          <option value="Jordan">Jordan</option>
+          <option value="Kazakhstan">Kazakhstan</option>
+          <option value="Kenya">Kenya</option>
+          <option value="Kiribati">Kiribati</option>
+          <option value="Kuwait">Kuwait</option>
+          <option value="Kyrgyzstan">Kyrgyzstan</option>
+          <option value="Laos">Laos</option>
+          <option value="Latvia">Latvia</option>
+          <option value="Lebanon">Lebanon</option>
+          <option value="Lesotho">Lesotho</option>
+          <option value="Liberia">Liberia</option>
+          <option value="Libya">Libya</option>
+          <option value="Liechtenstein">Liechtenstein</option>
+          <option value="Lithuania">Lithuania</option>
+          <option value="Luxembourg">Luxembourg</option>
+          <option value="Madagascar">Madagascar</option>
+          <option value="Malawi">Malawi</option>
+          <option value="Malaysia">Malaysia</option>
+          <option value="Maldives">Maldives</option>
+          <option value="Mali">Mali</option>
+          <option value="Malta">Malta</option>
+          <option value="Marshall Islands">Marshall Islands</option>
+          <option value="Mauritania">Mauritania</option>
+          <option value="Mauritius">Mauritius</option>
+          <option value="Mexico">Mexico</option>
+          <option value="Micronesia">Micronesia</option>
+          <option value="Moldova">Moldova</option>
+          <option value="Monaco">Monaco</option>
+          <option value="Mongolia">Mongolia</option>
+          <option value="Montenegro">Montenegro</option>
+          <option value="Morocco">Morocco</option>
+          <option value="Mozambique">Mozambique</option>
+          <option value="Myanmar (formerly Burma)">Myanmar (formerly Burma)</option>
+          <option value="Namibia">Namibia</option>
+          <option value="Nauru">Nauru</option>
+          <option value="Nepal">Nepal</option>
+          <option value="Netherlands">Netherlands</option>
+          <option value="New Zealand">New Zealand</option>
+          <option value="Nicaragua">Nicaragua</option>
+          <option value="Niger">Niger</option>
+          <option value="Nigeria">Nigeria</option>
+          <option value="North Macedonia">North Macedonia</option>
+          <option value="Norway">Norway</option>
+          <option value="Oman">Oman</option>
+          <option value="Pakistan">Pakistan</option>
+          <option value="Palau">Palau</option>
+          <option value="Palestine State">Palestine State</option>
+          <option value="Panama">Panama</option>
+          <option value="Papua New Guinea">Papua New Guinea</option>
+          <option value="Paraguay">Paraguay</option>
+          <option value="Peru">Peru</option>
+          <option value="Philippines">Philippines</option>
+          <option value="Poland">Poland</option>
+          <option value="Portugal">Portugal</option>
+          <option value="Qatar">Qatar</option>
+          <option value="Romania">Romania</option>
+          <option value="Rwanda">Rwanda</option>
+          <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+          <option value="Saint Lucia">Saint Lucia</option>
+          <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+          <option value="Samoa">Samoa</option>
+          <option value="San Marino">San Marino</option>
+          <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+          <option value="Saudi Arabia">Saudi Arabia</option>
+          <option value="Senegal">Senegal</option>
+          <option value="Serbia">Serbia</option>
+          <option value="Seychelles">Seychelles</option>
+          <option value="Sierra Leone">Sierra Leone</option>
+          <option value="Singapore">Singapore</option>
+          <option value="Slovakia">Slovakia</option>
+          <option value="Slovenia">Slovenia</option>
+          <option value="Solomon Islands">Solomon Islands</option>
+          <option value="Somalia">Somalia</option>
+          <option value="South Africa">South Africa</option>
+          <option value="South Korea">South Korea</option>
+          <option value="South Sudan">South Sudan</option>
+          <option value="Spain">Spain</option>
+          <option value="Sri Lanka">Sri Lanka</option>
+          <option value="Suriname">Suriname</option>
+          <option value="Sweden">Sweden</option>
+          <option value="Switzerland">Switzerland</option>
+          <option value="Tajikistan">Tajikistan</option>
+          <option value="Tanzania">Tanzania</option>
+          <option value="Thailand">Thailand</option>
+          <option value="Timor-Leste">Timor-Leste</option>
+          <option value="Togo">Togo</option>
+          <option value="Tonga">Tonga</option>
+          <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+          <option value="Tunisia">Tunisia</option>
+          <option value="Turkey">Turkey</option>
+          <option value="Turkmenistan">Turkmenistan</option>
+          <option value="Tuvalu">Tuvalu</option>
+          <option value="Uganda">Uganda</option>
+          <option value="Ukraine">Ukraine</option>
+          <option value="United Arab Emirates">United Arab Emirates</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="United States of America">United States of America</option>
+          <option value="Uruguay">Uruguay</option>
+          <option value="Uzbekistan">Uzbekistan</option>
+          <option value="Vanuatu">Vanuatu</option>
+          <option value="Venezuela">Venezuela</option>
+          <option value="Vietnam">Vietnam</option>
+          <option value="Yemen">Yemen</option>
+          <option value="Zambia">Zambia</option>
+          <option value="Zimbabwe">Zimbabwe</option>
+        </select>
+          <label class="Form__FloatingLabel label2 ts-label-block">Country of Residence</label>
+        </div>
+       <div class="Form__Item">
+        <select type="select" class="Form__Input bg_color" name="leadsource" aria-label="How did you hear about us" placeholder="How did you hear about us">
+          <option value="">Select an option</option>
+           <option value="instagram">Instagram</option>
+           <option value="google">Google</option>
+           <option value="affiliate">Affiliate Site</option>
+           <option value="events">Events</option>
+           <option value="friends">Friends</option>   
+           <option value="other">Other</option>
+        </select>
+          <label class="Form__FloatingLabel label2 ts-label-block">How did you hear about us</label>
+        </div>
+        <div class="Form__Item">
+            <input type="text" class="Form__Input bg_color" name="brand" aria-label="Brand" placeholder="Brand">
+            <label class="Form__FloatingLabel label2">Brand</label>
+        </div>
+      <div class="Form__Item">
+            <input type="text" class="Form__Input bg_color" name="reference_number" aria-label="Reference Number" placeholder="Reference Number">
+            <label class="Form__FloatingLabel label2">Reference Number</label>
+        </div>
+      <div class="Form__Item">
+            <input type="text" class="Form__Input bg_color" name="model" aria-label="Model" placeholder="Model">
+            <label class="Form__FloatingLabel label2">Model</label>
+        </div>
+      <div class="Form__Item">
+            <input type="text" class="Form__Input bg_color" name="material" aria-label="Material" placeholder="Material">
+            <label class="Form__FloatingLabel label2">Material</label>
+        </div>
+
+      <div class="main_form_cstm Form__Item">
+        <div class="inn_left_cstm">
+          <div class="Form__Item custom-file">
+                <input type="file" id="file-input" class="Form__Input bg_color" name="file[]" aria-label="Image(s) Upload" placeholder="Images Upload" multiple="multiple">
+                <label class="Form__FloatingLabel ts-label-block">Max. 4 Images, Size < 4MB <span class="bt_choose">Choose Files</span> </label>
+          </div>
+          <div class="Form__Item selc-frm" style="color:white;">
+
+      
+            <select id="myselection" type="select" class="Form__Input bg_color" name="check" aria-label="Watch Pickup" placeholder="Watch Pickup *" required="required">
+              <option value="" selected>Select an option</option>
+             <option value="Yes">Collect my watch</option> 
+              <option value="No" >I will bring my watch to Momentum</option>
+            </select> 
+
+
+            <!-- <select id="myselection" type="select" class="Form__Input bg_color" name="check" aria-label="Watch Pickup" placeholder="Watch Pickup *" >
+              <option disabled="disabled">Select an option</option>
+              <option disabled="disabled">Collect my watch (coming soon)</option>
+              <option value="No" selected="true">I will bring my watch to Momentum</option>
+            </select> -->
+
+            
+              <label class="Form__FloatingLabel label2 ts-label-block">Watch Pickup <sup>1</sup></label>
+          </div>
+        </div>
+                  <input type="hidden" value="No" name="address" />
+                          
+      </div>
+
+<div class="ts-mobile-flex-bx">
+        <div class="Form__Item form_custom1 full_textarea_cstm">
+          <textarea id="servicealltext" class="Form__Input bg_color" text="sds" name="product_description" aria-label="Your Issue" placeholder="Requested Service *" style="height:118px;" required></textarea>
+          <input type="hidden" id="additionalText" name="additional_text" value="2023-10-service-center">
+          <label class="Form__FloatingLabel label2" style="">Requested Service *</label>
+        </div>
+
+
+  
+   <!--    </div> -->
+
+
+      <div id="showOne" class="pickupfields cmns_div" style="display: none;">
+          <div class="inn_pickup_fields">
+            <div class="left">
+             
+               <div class="Form__Item form_custom1 full_textarea_cstm">
+                  <textarea id="servicepickup" class="required Form__Input bg_color" name="pickup_address" aria-label="Pickup Address" placeholder="Pickup Address *" style="height:120px;" required></textarea>
+                  
+                  <label class="Form__FloatingLabel" style="">Pickup Address *</label>
+              </div>
+
+          
+            </div>
+            <div class="right">
+              <div class="innr_dddate">
+                 <div class="Form__Item blocktest ts-date-form-two">
+                    
+         
+<!--   <input id="servicedate" class="Form__Input bg_color item" name="pickup_date" type="date" aria-label="Date" placeholder="Preferred Pickup Date" value="mm-dd-yyyy">  
+ -->
+                   <input class="Form__Input bg_color item" aria-label="Date"  placeholder="Preferred Pickup Date" name="pickup_date" type="text" id="my_date_picker" required readonly='true'>
+
+
+
+                   
+                    <label class="Form__FloatingLabel label2 ts-label-block">Preferred Pickup Date</label>
+                 </div>
+                 <div class="Form__Item ts-time">
+                    <select id="servicetime" type="select" class="Form__Input bg_color" name="pickup_time" aria-label="Pickup Time" placeholder="Pickup Time">
+                      <option>Select an option</option>
+                      <option value="9 am to 12 pm">9 am to 12 pm</option>
+                      <option value="12pm to 3pm">12pm to 3pm</option>
+                      <option value="3pm to 6pm">3pm to 6pm</option>
+                      <option value="9am to 6pm">9am to 6pm</option>
+                    </select>
+                     <label class="Form__FloatingLabel label2 ts-label-block">Preferred Pickup Time</label>
+                  </div>
+                </div>
+               <div class="Form__Item pickins">
+                  <input type="text" class="Form__Input bg_color" name="pickup_instructions" aria-label="Pickup Instructions" placeholder="Pickup Instructions">
+                  <label class="Form__FloatingLabel">Pickup Instructions</label>
+                </div>
+            </div>
+          </div>        
+        </div>
+
+   <div id="showTwo" class="bringfields cmns_div" style="display:none"> 
+
+          <div class="bringfields">
+            <div class="left_brigfields">
+                <h3>Momentum Dubai</h3>
+                <address>
+                  <div>Aix Tempora, Ltd. - Momentum<br>ICD Brookfield Place, Al Mustaqbal St.<br>Dubai International Financial Center<br>Dubai, UAE</div>
+                  <!-- <div>Level B1, The Gate Building, Marble Walk<br> Dubai International Financial Center <br>Dubai, UAE</div> -->
+                  <a class="ts-google-map-link" href="https://g.page/momentumdubai?share">Google Maps Link</a><br><br>
+                  Phone +971 4 327 4320
+                </address>
+            </div>
+            <div class="right_brigfields">
+
+    <div id="map"></div>
+ 
+            </div>
+          </div>          
+        </div>   
+</div>
+   <p class="c-checkbox submit-text">
+      An estimation fee of AED 250 +VAT applies and is waived upon estimate approval. Minor jobs costing less will be done without estimation.
+      </p>
+                     <div class="Form__Item ch_box">
+        <p class="c-checkbox">
+           <input type="checkbox" style="accent-color: white;" name="receiveemailcall" checked="checked">I would like to receive more information about Momentum's products, services, events, news and offers.
+        </p>
+      </div>
+        <button id="contact_form_save" type="submit" class="Form__Submit Button Button--primary Button--full newbtngser">Submit</button>
+        <p class="cstmnote"><sup>1</sup>Secure pickup charge of AED 30 is waived for all major services.</p>          
+      <div class="alert info" style="display: none; margin-top: 20px !important;">
+            <strong>Error!</strong> Please fix the error(s) below.
+            <span class="info-message"></span>
+      </div>
+   
+  <div class="alert success" style="margin-top: 20px !important; display: none; font-family: Montserrat,sans-serif; font-size: 12px; font-weight: 500; font-style: normal; text-transform: uppercase;">
+             Submitted successfully <img src="https://cdn.shopify.com/s/files/1/0513/9201/files/Vector.svg">
+      </div>
+      </form>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script>
+  
+    var dvlp_app_url = 'https://momentum-dubai.com/apps/unified-momentum';
+    
+  $('#service--form').submit(function (event) {
+    $('.newbtngser').html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+    $( ".Form__Submit.newbtngser" ).prop( "disabled", true );
+            // Append the text from the hidden input to the textarea value
+            var pickupAddress = document.getElementById("servicealltext").value;
+            var additionalText = document.getElementById("additionalText").value;
+            document.getElementById("servicealltext").value = additionalText + ' ' + pickupAddress;
+            console.log("testing");
+            event.preventDefault();
+            $('.success').hide();
+            $('.info').hide();
+            $.post(dvlp_app_url + "/submit-ticket",
+//                 {
+//                     domain: "surf9.myshopify.com",
+//                     first_name: $('#contactFormFirstName').val(),
+//                     last_name: $('#contactFormLastName').val(),
+//                     email: $('#contactFormEmail').val(),
+//                     product: $('#contactFormProduct').val(),
+//                     product_size: $('#contactFormProductSize').val(),
+//                     product_color: $('#contactFormProductColor').val(),
+//                     black_box: $('#ioBlackBox').val(),
+//                     // phone: $('#contactFormPhone').val(),
+//                     address1: $('#contactFormAddress1').val(),
+//                     city: $('#contactFormCity').val(),
+//                     province: $('#contactFormProvince').val(),
+//                     country: $('#contactFormCountry').val(),
+//                     zip: $('#contactFormZip').val(),
+//                     // serial_number: $('#contactFormSerialNumber').val(),
+//                     is_subscribed: $('#isSubscribed:checked').val(),
+//                     acceptance: $('#acceptance').val(),
+//                     ip_address: $('.ip_address').val()
+//                 },
+                   $('#service--form').serialize(),
+                function (data, status) {
+              if (data.status == '1') {
+                      $('#contact_form_save').hide();
+                        $('.success').show();
+                $( ".Form__Submit.newbtngser" ).prop( "disabled", true );
+                
+                console.log("testing1");
+                    } else {
+                        let errors = '<ul>';
+                        $.each(data.message, function (key, value) {
+                            errors += '<li>' + value + '</li>';
+                        });
+                        errors += '</ul>';
+                      console.log(errors);
+                      
+                        $('.info-message').html(errors);
+                        $('.info').show();
+                        $('#contact_form_save').show();
+                    }
+
+                   $('.newbtngser').html("Submit");
+                })
+                .fail(function (response) {
+                    let errors = '<ul><li>Something went wrong, please try again later.</li></ul>';
+                    $('.info-message').html(errors);
+                    $('.info').show();
+                    $('#contact_form_save').show();
+                  $( ".Form__Submit.newbtngser" ).prop( "disabled", true );
+                  console.log("testing2");
+                  $('.newbtngser').html("Submit");
+                });
+            return false;
+        });
+  </script>
+
+
+<script type="text/javascript">
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+        }
+        return result;
+    }
+
+    var files;
+  
+
+
+    $(document).ready(function(){
+      $('#access_token').val(makeid(15));
+        $("#file-input").on("change", function(e){
+            let fdata = new FormData();
+
+            files = this.files;
+            console.log(files);
+            $.each(files, function(i, file) {
+                fdata.append("file[" + i + "]", file);
+            });
+            fdata.append("domain", "momentum-15.myshopify.com");
+            fdata.append("access_token", $('#access_token').val());
+            console.log(fdata);
+
+            $.ajax({
+                url: "https://momentum-dubai.com/apps/unified-momentum/lead-images",
+                // url: route('https://566e-182-176-83-28.ap.ngrok.io/lead-images'), for mydevice
+                type: "post",
+                data: fdata, //add the FormData object to the data parameter
+                processData: false, //tell jquery not to process data
+                contentType: false, //tell jquery not to set content-type
+                success: function (data, status) {
+                  if (data.status == '1') {
+                        $('.info').hide();
+                    } else {
+                        let errors = '<ul>';
+                        $.each(data.error, function (key, value) {
+                            errors += '<li>' + value + '</li>';
+                        });
+                        errors += '</ul>';
+                        $('.info-message').html(errors);
+                        $('.info').show();
+                    }
+                },
+                error: function (jqxhr, status, errorMessage) {
+                    let errors = '<ul><li>Something went wrong, please try again later.</li></ul>';
+                    $('.info-message').html(errors);
+                    $('.info').show();
+                    $('#contact_form_save').show();
+                }
+            });
+        });
+    });
+</script>
+<!-- <script>
+$(document).ready(function() {
+$(".tech-link").click(function() {
+     $('html, body').animate({
+         scrollTop: $(".form-c1").offset().top
+     });
+ });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#serviceemail').val()) {
+           $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script>
+
+
+<script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#phone2').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script>  
+                  
+
+<script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#servicefirstname').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script>         
+
+<script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#servicelastname').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script>   
+
+
+ 
+                  <script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#myselection').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    }) 
+});
+  </script>  
+
+<script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#servicealltext').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script> -->
+<!--   <script>
+$(document).ready(function() {
+    $('.newbtngser').click(function() {
+        if (!$('#my_date_picker').val()) {
+            $(this).html("Submit");
+        }else {
+     $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+}
+    })
+});
+  </script> -->
+
+<script>
+$(document).ready(function(){
+  $('#myselection').change(function(){
+    $('showOne').hide();
+    $('showTwo').hide();
+    if($('#myselection').val() == 'Yes') {
+      $('showOne').hide();
+    $('showTwo').show();
+$('#servicepickup').prop('required',true);
+//   $('.newbtngser').click(function() {
+//         if (!$('#servicepickup').val()) {
+//             $(this).html("Submit");
+//         }else {
+//      $(this).html("Submitting <i class='fa fa-spinner fa-spin'></i>");
+// }
+//     });     
+    
+    } else if($('#myselection').val() == 'No') {
+      $('showOne').show();
+    $('showTwo').hide();
+$('#servicepickup').prop('required',false);
+    }
+    
+  });
+});
+</script>
+<style>
+.ts-hidden-date-input {
+    margin-top: 0;
+    left: 20px;
+    width: 138px !important;
+    border: 0px !important;
+    left: 7px;
+    position: relative;
+    top: -48px;
+    height: 45px !important;
+}
+.noactive
+  {
+    display:none;
+  }
+.item.active {
+  display: block;
+}
+  .innr_dddate
+  {
+    position:relative;
+  }
+  </style>
+     <script>
+
+       $(document).ready(function(){
+  $('.blocktest').on('click', '.item' , function(e){
+     $('.ts-hidden-date-input').removeClass('active')
+       $('.ts-hidden-date-input').addClass('noactive')
+          
+     	  .siblings('.item')
+        .addClass('active');     
+  });
+});
+     </script>  
+     <script>
+     </script>
+<script>
+//$(function() {
+//$( "#servicedate" ).datepicker({
+  //  dateFormat: 'dd-mm-yy',
+ 
+    //placeholder: "sdkfghsdjf"
+//});
+//});
+</script>
+<script>
+$( "#ts-date-bx" ).on( "click", function() {
+$( "#servicedate" ).select();
+$(this).hide();
+});
+</script>
+<script>
+$( "#ts-hidden-servicetime" ).click(function() {
+  $( "#servicetime" ).click();
+});
+</script>   
+
+<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
+<script>
+  $(function() {
+    $( "#my_date_picker" ).datepicker({
+      minDate: '-0d'
+    });
+  });
+</script>             
+<script>
+$(function () {
+    $("#arrival").datepicker({
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 1,
+        yearRange: ":2016",
+        minDate: "dateToday",
+        onClose: function (selectedDate) {
+            var myDate = $(this).datepicker('getDate'); 
+                myDate.setDate(myDate.getDate()+1); 
+            $('#my_date_picker').datepicker('setDate', myDate);
+        }
+    });
+    
+    $("#my_date_picker").datepicker({
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 2,
+        yearRange: ":2016",
+    });
+});
+
+//   $( document ).ready(function() {
+//      $("#arrival").datepicker("setDate", "0");
+//     $("#my_date_picker").datepicker("setDate", "1");
+// });
+
+$( "#myselection" ).on("change",function() {
+    $("#arrival").datepicker("setDate", "0");
+    $("#my_date_picker").datepicker("setDate", "1");
+});
+
+</script>
+
+<script>
+  $(function() {
+    $("#my_date_picker").on("click", function(e) {
+      $(".ts-date-form-two").addClass("wide");  
+      e.stopPropagation()
+    });
+    $(document).on("click", function(e) {
+      if ($(e.target).is(".ts-date-form-two") === false) {
+        $(".ts-date-form-two").removeClass("wide");
+      }
+    });
+  });
+</script>
+<script>
+  $(function() {
+    $("#ui-datepicker-div").on("click", function(e) {
+      $(".ts-date-form-two").removeClass("wide");
+      e.stopPropagation()
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Service form october",
+  "class": "shopify-section--custom-html",
+  "settings": [
+    {
+      "type": "text",
+      "id": "customclassname",
+      "label": "customclassname",
+      "default": "customclassname"
+    },    
+    {
+      "type": "checkbox",
+      "id": "add_vertical_spacing",
+      "label": "Add vertical spacing",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service Form October"
+    }
+  ]
+}
+{% endschema %}

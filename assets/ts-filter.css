@@ -1,0 +1,136 @@
+/* Your designer can adjust these to get all kind of looks:
+one or separate lines, active links instead of checkboxes, colors etc. */
+
+
+.collection-filters-container {
+/*
+
+*/
+  text-align: center;
+  margin: 10px 0px 10px 0px;
+  font-size: 16px;
+  display: block;
+}
+
+.cf-title {
+  display: inline-block; /* to have filters separated one per line, change "inline-block" to "block" */
+  font-weight: bold;
+  margin: 0px 5px 0px 24px;
+  font-size: 16px;
+/*
+  text-transform: uppercase;
+  margin: 20px 0px 0px 0px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 6px;
+*/
+}
+
+.cf-options-container {
+/* optional, restrict height of available options to a scrollable container */
+/*
+  display: block;
+  max-height: 360px;
+  overflow: auto;
+*/
+}
+
+.cf-select {
+  display: inline-block; /* to have filters separated one per line, change "inline-block" to "block" */
+  width: 12em;
+  margin-right: 1em;
+  float: none !important;
+  height: 40px;
+
+  /*background: transparent url(https://cdn.shopify.com/s/files/1/0653/0119/t/1/assets/select.png) no-repeat right;*/
+  /*border-radius: 15px;*/
+  padding: 2px 2px 2px 17px;
+
+  /*color: #000;
+  background-color: #dedede;*/
+  border: solid 1px #d3d2d2;
+
+  /*border: 0px solid;*/
+  /*box-shadow: none;*/
+  /*background-image: none;*/
+  /*-webkit-appearance: none;*/
+/*  vertical-align: middle;*/
+/*
+  background-color: #000;
+  border-color: #000;
+  color: #ffffff;
+  padding: 0px;
+  margin-left: 4em;
+*/
+}
+
+.cf-checkbox, .cf-radio {
+  /*display: none !important;*/
+  padding: 0;
+  /*margin: 0 !important;*/
+  vertical-align: bottom;
+  position: relative;
+  top: -6px;
+}
+
+/* individual checkbox labels */
+.collection-filters-container label span {
+	font-weight: normal;
+	opacity: 0.8;
+}
+
+.collection-filters-container label {
+  display: block; /* to have checkboxes on the same line, change "block" to "inline-block" */
+  margin: 0px 6px 6px 0px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/*
+.collection-filters-container label {
+  margin: 0px;
+  padding: 10px 0px 10px 10px;
+  background-color: #fff;
+}
+.collection-filters-container label:nth-child(even) {
+	background: #fafafa;
+}
+*/
+
+.cf-checkbox:checked + span {
+  font-weight: bold !important;
+  opacity: 1;
+  /* color: #000000; */
+}
+.cf-radio:checked + span {
+  font-weight: bold !important;
+  opacity: 1;
+  /* color: #000000; */
+}
+
+.cf-mobile-only {
+  display: none;
+}
+
+/* mobile */
+@media (max-width: 760px) {
+	.cf-title {
+	  display: none; /* to have filters separated one per line, change "inline-block" to "block" */
+	  font-weight: bold;
+	  margin: 2px 5px 0px 0px;
+	}
+
+	.cf-select {
+	  display: block; /* to have filters separated one per line, change "inline-block" to "block" */
+	  width: 100%;
+	  max-width:none;
+	}
+
+	.cf-desktop-only {
+  		display: none;
+	}
+  	.cf-mobile-only {
+  		display: block;
+	}
+
+}

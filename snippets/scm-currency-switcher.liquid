@@ -1,0 +1,8 @@
+{% assign currencySize = 2 %}
+{% assign currencyCodes = "AED USD HKD " | rstrip | split: ' ' %}
+{% assign currencySymbols = "Dhs $ $ " | rstrip | split: ' ' %}
+{% assign defaultCurrencyCode = "AED" %}
+{% assign defaultCurrencySymbol = "Dhs" %}
+
+    {% render 'scm-currency-switcher-08' ,currencySize : currencySize, currencyCodes : currencyCodes ,currencySymbols :currencySymbols,defaultCurrencyCode: defaultCurrencyCode,defaultCurrencySymbol:defaultCurrencySymbol %}
+    

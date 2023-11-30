@@ -1,0 +1,129 @@
+<div class="main-search-sec">
+  <div class="inner-search">
+    <div class="contentinfor">
+      <div class="inner-heading">
+        {%- if section.settings.title != blank -%}
+          <h3 class="heading h3"> 
+              {{- section.settings.title | escape -}}
+          </h3>
+        {%- endif -%}
+        <div class="new-cstmsearch">
+          <input type="text" id="faqSearch" placeholder="Search FAQs">
+          <svg id="faqSearchIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.85 31.85"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;}</style></defs><title>Asset 7</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><circle class="cls-1" cx="14" cy="14" r="13.5"/><line class="cls-1" x1="23.55" y1="23.55" x2="31.5" y2="31.5"/></g></g></svg>
+        </div>
+      </div>
+      <div id="faqContainer">
+        {% for block in section.blocks %}
+          {% if block.settings.question != blank %}
+            <div class="faq-item">
+              <h2 class="accordion question">{{ block.settings.question }}</h2>
+              <p class="panel answer">{{ block.settings.answer }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="imgbannere">
+      <div class="innerimg">
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | img_url :'master' }}">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function() {
+    $('#faqSearch').on('input', function() {
+      var searchQuery = $(this).val().toLowerCase();
+      $('.faq-item').each(function() {
+        var question = $(this).find('.question').text().toLowerCase();
+        if (question.includes(searchQuery)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+         var answer = $(this).find('.answer').text().toLowerCase();
+        if (answer.includes(searchQuery)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  });
+    var acc = document.getElementsByClassName("accordion");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  }
+</script>
+
+<style>
+  #faqContainer .panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Landing page search",
+  "class":"cstmsearchland",
+  "settings": [
+    {
+      "type":"text",
+      "id":"title",
+      "label":"Title"
+    },
+    {
+      "type":"image_picker",
+      "id":"image",
+      "label":"Image"
+    }
+  ],
+  "blocks":[
+    {
+      "type":"faq",
+      "name":"FAQ",
+      "settings":[
+        {
+          "type":"text",
+          "id":"question",
+          "label":"Question"
+        },
+        {
+          "type":"text",
+          "id":"answer",
+          "label":"Answer"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+     "name": "Landing page search"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,378 @@
+        {%- assign timestamp = 'now' | date : "%s" -%}
+        {%- assign ex_ids = ""-%}
+  {%- assign ex_frmpool_id = article.id | append: '"' | prepend: '"' -%}
+
+{%- assign ex_tags = "2018, Albert chain, audemars piguet, Audemars Piguet Royal Oak, Audemars Piguet Royal Oak Perpetual, BASELWORLD, Bell & Ross BR 03, Bezel, Big Bang, Big Bang Unico Sapphire, Black Bay Bronze, Blancpain, bling, Breitling Chronomat B01, Breitling Navitimer, caliber 6830, carbotech, Casio, chronograph, collecting watches, Complications, desert camouflage, Desert Type, diamond, Diver, Elgin, Eminem, Excalibur, Fake watches, Fiftyfathoms, Fugaku, Geneva Watch Auction, GMT, Grand Seiko, Great Wave, Gruebel Forsey, H. Moser & Company, Hamilton, Heuer Autavia, Hip-Hop, Holy Grail, Hublot, Hunter’s Case, IWC, IWC Pilot’s Watch Mark XVIII, Jaeger LeCoultre Master Control, Jaeger-LeCoultre, James Bond, James Dean, Jay-Z, JLC, Johnny Depp, Jumbo, Kanye West, Kings of Bling, Kiyoshi Terui, Leap years, Ludwig Oechslin, Men's Fashion, military-inspired, Momentum Dubai, Mont Blanc, Montblanc 4810 ExoTourbillon Slim, moon phase, moonphase, Navitimer, News, Ochs Und Junior, Omega, Omega Quartz, Omega Seamaster, Omega Speedmaster, Open Face, Panerai, patek, Patek Philippe, Patek Philippe 2499, Patek Philippe Nautilus, Patek Philippe Officier, Patek Philippe Quartz, Paul Newman, Pebble Beach Concours D'Elegance, perpetual calendars, Pilot’s watch, Pimp My Watch, pocket watch, Portugieser Perpetual Calendar, Quartz, Racing, Richard Mille, Rober Bradley, Roger Dubuis, Roger Dubuis Hommage Millesime, Rolex, Rolex Datejust, Rolex Day Date, Rolex Daytona, Rolex Daytona Paul Newman, Rolex Explorer I, Rolex GMT, Rolex GMT Master Ref. 1675, Rolex Oyster Sotto, Rolex Quartz, Rolex Sea Dweller, Rolex Submariner, Rotating Bezel, Royal Oak Offshore, Schweizer Mustermesse, Second World War, Seiko, Seiko Credor Fugaku Tourbillon Limited Edition, Service, Sihh 2019, Speedmaster, SpeedyTuesday, Straight Outta Compton, Swizz Beatz, Tachymeter Bezel, Tag Heuer, Tiret, tool-watch, Tudor, Tudor Heritage, Updates, Vacheron Constantin, Waltham, watch maintenance, Wilsdorf" | split: "," -%}
+{%- assign no_post_display = 4 -%}
+
+{%- assign b_id = blog.id  -%}
+
+  {%- assign blog_ids = "5479015,5378531"  -%}
+
+      {%- assign blog_handle_arr = "press,insights" | split: "," -%}
+  
+{%- assign blog_flag = "false" -%}
+
+{%- unless blog_ids contains b_id -%}
+{%- assign blog_flag = "true" -%}
+{%- endunless -%}
+
+{%- unless ex_ids contains article.id -%}
+
+{%- if blog_flag == "false" -%}
+
+{%- assign article_temp = article.id -%}
+
+{%- assign related_posts = "" -%}
+{%- assign curr_blog = blog.handle -%}
+
+{%- for article in blogs[curr_blog].articles -%}
+{%- if article.id == article_temp -%}
+{%- assign current_post_tags = article.tags -%}
+{%- assign article_author = article.author -%}
+{%- assign article_title = article.title -%}
+{%- assign article_title_arr = article_title | remove : " " | split: "" -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- assign main_flag = "true" -%}
+{%- for tag in ex_tags -%}
+{%- assign ex_tags_temp = tag | strip -%}
+{%- if current_post_tags contains ex_tags_temp -%}
+{%- assign main_flag = "false" -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- if main_flag == "true" -%}
+
+  <div id="relatedblogs">
+
+    {%- for blog in blog_handle_arr -%}
+
+    {%- assign blog_temp = blog -%}
+
+    {%- for article in blogs[blog_temp].articles -%}
+    {%- unless ex_frmpool_id contains article.id -%}
+
+    
+      {%- for tag in article.tags -%}
+      {%- if current_post_tags contains tag -%}
+      {%- assign related_posts = related_posts | append:article.id | append : "," -%}
+      {%- endif -%}
+      {%- endfor -%}
+
+    
+    {%- endunless -%}
+    {%- endfor -%}
+
+
+    {%- endfor -%}
+
+    {%- if related_posts.size > 0 -%}
+
+    {%- assign tsl = timestamp | slice : -1,1 | times:1 -%}
+
+    {%- assign rids = related_posts | split: ',' -%}
+
+
+    {%- assign rindex = tsl -%}
+
+    {%- if tsl > rids.size or tsl < 0 -%}
+    {%- assign time_arr = timestamp | split: '' -%}
+    {%- for t in time_arr reversed -%}
+    {%- assign ti = t | times:1 -%}
+    {%- if ti < rids.size -%}
+    {%- assign rindex = forloop.index -%}
+    {%- break -%}
+    {%- endif -%}
+    {%- endfor -%}
+    {%- endif -%}
+
+    {%- if rindex == rids.size -%}
+    {%- assign rindex = rindex | minus : 1-%}
+    {%- endif -%}
+
+    {%- assign articleids = '' -%}
+    {%- for rid in rids offset:rindex -%}
+    {%- assign articleids = articleids | append:rid | append : "," -%}
+    {%- endfor -%}
+
+    {%- assign rsize = articleids | split:","  -%}
+
+    {%- if rsize.size < no_post_display -%}
+    {%- for rid in rids -%}
+    {%- unless articleids contains rid -%}
+    {%- assign articleids = articleids | append:rid | append : "," -%}
+    {%- endunless -%}
+    {%- endfor -%}
+    {%- endif -%}
+
+    {%- assign rsize = articleids | size | minus:1 -%}
+    {%- assign articleids = articleids | slice: 0, rsize | split:"," -%}
+
+    {%- assign article_ids = articleids | uniq -%}
+
+    <h3>Related Posts</h3>    <ul>    {%- assign count = 0 -%}
+    {%- for aid in article_ids -%}
+    {%- assign rflag = "false" -%}
+    {%- for blog in blog_handle_arr -%}
+    {%- assign blog_temp = blog -%}
+
+    {%- for article in blogs[blog_temp].articles -%}
+    {%- if count == no_post_display -%}
+    {%- break -%}
+    {%- endif -%}
+    {%- if aid contains article.id -%}
+
+    {%- assign ex_frmpool_tags = "Rolex Day Date, Omega Speedmaster" | split: "," -%}
+    {%- assign ex_frmpool_main_flag = "true" -%}
+    {%- for tag in ex_frmpool_tags -%}
+    {%- assign ex_frmpool_ex_tags_temp = tag | strip -%}
+    {%- if article.tags contains ex_frmpool_ex_tags_temp -%}
+    {%- assign ex_frmpool_main_flag = "false" -%}
+    {%- endif -%}
+    {%- endfor -%}
+
+    {%- if ex_frmpool_main_flag == "true" -%}
+    <li>
+          {%- if article.image -%}
+      <div class="rb_image_wrap">
+        <a href="{{ article.url }}"><img src="{{ article.image.src | img_url: '' }}" alt="{{ article.title }}" class="rb_image" /></a>
+      </div>
+      {%- else -%}
+      <div class="rb_image_wrap">
+        <div class="rb_no_image"></div>
+      </div>
+      {%- endif -%}
+        <div class="rb_contents">
+      <h2 class="rb_title"><a href='{{ article.url }}'>{{ article.title }}</a></h2>
+
+              {%- if article.content != "" -%}
+        <p>{{ article.content | strip_html | strip | truncate: 120 }}</p>
+        {%- endif -%}
+      
+    </div>
+
+    </li>    {%- endif -%}
+
+    {%- assign rflag = "true" -%}
+    {%- assign count = count | plus:1 -%}
+    {%- break -%}
+    {%- endif -%}
+    {%- endfor -%}
+    {%- if rflag == "true" -%}
+    {%- break -%}
+    {%- endif -%}
+    {%- endfor -%}
+    {%- endfor -%}
+    </ul>    {%- else -%}
+
+    
+      {%- assign all_articleids = "" -%}
+
+      {%- for blog in blog_handle_arr -%}
+      {%- assign blog_temp = blog -%}
+      {%- for article in blogs[blog_temp].articles -%}
+      {%- unless article.id == article_temp -%}
+      {%- assign all_articleids = all_articleids | append:article.id | append : "," -%}
+      {%- endunless -%}
+      {%- endfor -%}
+      {%- endfor -%}
+
+      {%- assign tsl = timestamp | slice : -1,1 | times:1 -%}
+
+      {%- assign rids = all_articleids | split: ',' -%}
+
+
+      {%- assign rindex = tsl -%}
+
+      {%- if tsl > rids.size or tsl < 0 -%}
+      {%- assign time_arr = timestamp | split: '' -%}
+      {%- for t in time_arr reversed -%}
+      {%- assign ti = t | times:1 -%}
+      {%- if ti < rids.size -%}
+      {%- assign rindex = forloop.index -%}
+      {%- break -%}
+      {%- endif -%}
+      {%- endfor -%}
+      {%- endif -%}
+
+      {%- if rindex == rids.size -%}
+      {%- assign rindex = rindex | minus : 1-%}
+      {%- endif -%}
+
+      {%- assign articleids = '' -%}
+      {%- for rid in rids offset:rindex -%}
+      {%- assign articleids = articleids | append:rid | append : "," -%}
+      {%- endfor -%}
+
+      {%- assign rsize = articleids | split:","  -%}
+
+      {%- if rsize.size < no_post_display -%}
+      {%- for rid in rids -%}
+      {%- unless articleids contains rid -%}
+      {%- assign articleids = articleids | append:rid | append : "," -%}
+      {%- endunless -%}
+      {%- endfor -%}
+      {%- endif -%}
+
+      {%- assign rsize = articleids | size | minus:1 -%}
+      {%- assign articleids = articleids | slice: 0, rsize | split:"," -%}
+
+      <h3>Related Posts</h3>      <ul>      {%- assign count = 0 -%}
+      {%- for aid in articleids -%}
+      {%- assign rflag = "false" -%}
+      {%- for blog in blog_handle_arr -%}
+      {%- assign blog_temp = blog -%}
+
+      {%- for article in blogs[blog_temp].articles -%}
+      {%- if count == no_post_display -%}
+      {%- break -%}
+      {%- endif -%}
+      {%- if aid contains article.id -%}
+
+      {%- assign ex_frmpool_tags = "Rolex Day Date, Omega Speedmaster" | split: "," -%}
+      {%- assign ex_frmpool_main_flag = "true" -%}
+      {%- for tag in ex_frmpool_tags -%}
+      {%- assign ex_frmpool_ex_tags_temp = tag | strip -%}
+      {%- if article.tags contains ex_frmpool_ex_tags_temp -%}
+      {%- assign ex_frmpool_main_flag = "false" -%}
+      {%- endif -%}
+      {%- endfor -%}
+
+      {%- if ex_frmpool_main_flag == "true" -%}
+
+      <li>              {%- if article.image -%}
+        <div class="rb_image_wrap">
+          <img class="rb_image" src="{{ article.image.src | img_url: '' }}" alt="{{ article.title }}" />
+        </div>
+        {%- else -%}
+        <div class="rb_no_image"></div>
+        {%- endif -%}
+      
+      <div class="rb_contents">
+        <h2 class="rb_title"><a href='{{ article.url }}'>{{ article.title }}</a></h2>
+
+                  {%- if article.content != "" -%}
+          <p>{{ article.content | strip_html | strip | truncate: 120 }}</p>
+          {%- endif -%}
+              </div>
+      </li>      {%- endif -%}
+
+      {%- assign rflag = "true" -%}
+      {%- assign count = count | plus:1 -%}
+      {%- break -%}
+      {%- endif -%}
+      {%- endfor -%}
+      {%- if rflag == "true" -%}
+      {%- break -%}
+      {%- endif -%}
+      {%- endfor -%}
+      {%- endfor -%}
+      </ul>
+    
+    {%- endif -%}
+
+
+    <style type="text/css">
+      .rb_contents {
+        display: inline-block
+      }
+
+      .rb_no_image {
+        height: 100%;
+        width: 100%;
+        background-color: rgb(128, 128, 128);
+        display: inline-block
+      }
+
+     /* img.rb_image {
+        max-height: 75px;
+        max-width: 100px;
+        height: auto;
+        width: auto
+      }*/
+
+      /*.rb_image_wrap {
+        float: left;
+        width: 105px
+      }*/
+
+      .rb_contents {
+        margin: 0 0 0 20px
+      }
+
+      #relatedblogs li {
+        margin: 0 0 15px;
+        clear: both
+      }
+      #relatedblogs li {
+        display: block;
+      }
+
+      div#relatedblogs ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+      column-gap: 20px;
+      }
+
+      #relatedblogs li {
+      display: grid !important;
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+      }
+
+     
+
+      div#relatedblogs .rb_contents {
+      display: grid;
+      grid-template-columns: 1fr;
+      }
+
+
+      #relatedblogs .rb_image_wrap {
+      float: left;
+      width: 100%;
+      text-align: center;
+      height: 125px;
+      overflow: hidden;
+      border-radius: 10px;    
+    }
+
+      #relatedblogs .rb_image_wrap a {
+      display: block;
+      float: left;
+      width: 100%;
+      height: 100%;
+      }
+
+
+      #relatedblogs img.rb_image {
+      max-height: 100%;
+      max-width: 100%;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      margin: 0;
+      }
+
+
+      #relatedblogs li::before {
+   
+          opacity: 0;
+      }
+      .article__content.rte {
+    font-size: inherit;
+}
+
+      #relatedblogs li {
+        display: block;
+      }
+
+          </style>
+
+
+  </div>
+{%- endif -%}
+{%- endif -%}
+{%- endunless -%}

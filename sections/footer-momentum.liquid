@@ -1,0 +1,170 @@
+<style>
+  #shopify-section-{{ section.id }} .footer {
+    {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
+
+    --background: {{ settings.footer_background.red }}, {{ settings.footer_background.green }}, {{ settings.footer_background.blue }};
+    --heading-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
+    --text-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
+    --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
+  }
+
+.footer__inner_momentum,.footer__inner_momentum .momentum-social-icons, .footer__inner_momentum .momentum-card-icons { display : flex} 
+.footer__inner_momentum .momentum-about { width: 40%}
+.footer__inner_momentum .shop {width: 30%}
+.footer__inner_momentum .momentum-momentum-info { width: 30%}  
+.footer__inner_momentum .momentum-copyright, .footer__inner_momentum .momentum-card-icons { width: 50%}
+.footer__inner_momentum .momentum-card-icons {justify-content: flex-end;}
+</style>
+
+<footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
+  <div class="container">
+    <div class="footer__inner_momentum">
+        <div class="momentum-about">
+          <p><img src="{{ section.settings.footer_logo | img_url}}" width="100" height="100" /></p>
+          <p><span>{{ section.settings.foot_about_heading | escape }}</span></p>
+          {{ section.settings.foot_about_content  }}
+        </div>
+        
+        <div class="momentum-shop">
+          <ul class="linklist">
+            {% for link in linklists[section.settings.foot_menu_shop].links %}
+              <li class="linklist__item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %} 
+          </ul>      
+        </div>
+        
+        <div class="momentum-info">
+          <ul class="linklist">
+            {% for link in linklists[section.settings.foot_menu_info].links %}
+              <li class="linklist__item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %} 
+          </ul>    
+        </div>  
+      
+    </div>
+   <div class="footer__inner_momentum">
+       <div class="momentum-social-icons">
+            <div><img src="{{ section.settings.footer_img_social_1 | img_url}}" width="50" height="50" /></div>
+            <div><img src="{{ section.settings.footer_img_social_2 | img_url}}" width="50" height="50" /></div>
+            <div><img src="{{ section.settings.footer_img_social_3 | img_url}}" width="50" height="50" /></div>
+            <div><img src="{{ section.settings.footer_img_social_4 | img_url}}" width="50" height="50" /></div>     
+            <div><img src="{{ section.settings.footer_img_social_5 | img_url}}" width="50" height="50" /></div>  
+       </div>
+   </div>
+   <div class="footer__inner_momentum">
+       <div class="momentum-copyright">(c)Momentum</div>
+       <div class="momentum-card-icons">
+            <div><img src="{{ section.settings.footer_img_pay_ico1 | img_url}}" width="100" height="100" /></div>
+            <div><img src="{{ section.settings.footer_img_pay_ico2 | img_url}}" width="100" height="100" /></div>
+            <div><img src="{{ section.settings.footer_img_pay_ico3 | img_url}}" width="100" height="100" /></div>
+            <div><img src="{{ section.settings.footer_img_pay_ico4 | img_url}}" width="100" height="100" /></div> 
+       </div>
+   </div>
+   
+  </div>
+</footer>
+
+
+{% schema %}
+  {
+    "name": "Footer Momentum",
+    "class": "shopify-section--footer-momentum",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "footer_logo",
+        "label": "Image",
+        "info": "300 x 300px .png recommended"
+      },      
+      {
+        "type": "text",
+        "id": "foot_about_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "foot_about_content",
+        "label": "Content"
+      },
+      {
+        "type": "link_list",
+        "id": "foot_menu_shop",
+        "label": "Menu",
+        "info": "This menu won't show dropdown items.",
+        "default": "footer"
+      },
+      {
+        "type": "link_list",
+        "id": "foot_menu_info",
+        "label": "Menu",
+        "info": "This menu won't show dropdown items.",
+        "default": "footer"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_pay_ico1",
+        "label": "Payment Icon 1",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_pay_ico2",
+        "label": "Payment Icon 2",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_pay_ico3",
+        "label": "Payment Icon 3",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_pay_ico4",
+        "label": "Payment Icon 4",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_social_1",
+        "label": "Social Icon 1",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_social_2",
+        "label": "Social Icon 2",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_social_3",
+        "label": "Social Icon 3",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_social_4",
+        "label": "Social Icon 4",
+        "info": "300 x 300px .png recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_img_social_5",
+        "label": "Social Icon 5",
+        "info": "300 x 300px .png recommended"
+      }      
+    ],    
+    "presets": [
+      {
+        "name": "Footer Momentum"
+      }
+    ]    
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

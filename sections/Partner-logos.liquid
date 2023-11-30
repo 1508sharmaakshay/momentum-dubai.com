@@ -1,0 +1,104 @@
+<div class="main-partnerlogo">
+  <div class="container ">
+    <header class="section__header  section__header--center">
+      <div class="text-container">
+        <h3 class="heading h2">{{ section.settings.heading }}</h3>
+      </div>
+    </header>
+
+    <div class="owl-carousel inner-partner">
+      {% for block in section.blocks %}
+        {% if block.settings.image != blank %}
+          <div class="item">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" target="_blank">
+            {% endif %}
+            <img class="part-logo" src="{{ block.settings.image | img_url : 'master' }}">
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+$(document).ready(function(){
+  $('.owl-carousel.inner-partner').owlCarousel({
+      loop:true,
+      margin:20,
+      dots:false,
+      nav:false,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+                slideSpeed:3000,
+              paginationSpeed: 3000,
+               autoplay: true
+          },
+          600:{
+              items:2,
+              slideSpeed:3000,
+              paginationSpeed: 3000,
+               autoplay: true
+           },
+          768:{
+              items:3,
+            slideSpeed:3000,
+              paginationSpeed: 3000,
+               autoplay: true
+          },
+          1025:{
+              items:4,
+          }
+      }
+  })
+});
+</script>
+
+{% schema %}
+{
+  "name": "Partner Logo",
+  "class":"cstmlogopartner",
+  "settings": [
+    {
+      "type":"text",
+      "id":"heading",
+      "label":"Heading"
+    }
+  ],
+  "blocks":[
+    {
+      "type":"image",
+      "name":"Partner",
+      "settings":[
+        {
+          "type":"image_picker",
+          "id":"image",
+          "label":"Image"
+        },
+        {
+          "type":"url",
+          "id":"link",
+          "label":"Link"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "Partner Logo"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

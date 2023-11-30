@@ -1,0 +1,58 @@
+<div class="mainbaner">
+  <div class="inner-mainbanner">
+   {% if section.settings.image != blank %}
+    <img
+      class="{% if section.settings.mobile_image != blank %}desktopbanner{% endif %} cstmbannerimg"
+      src="{{ section.settings.image | img_url :'master' }}"
+      loading="lazy"
+    >
+    {% endif %}
+    {% if section.settings.mobile_image != blank %}
+      <img
+        class="mobilebanner cstmbannerimg"
+        src="{{ section.settings.mobile_image | img_url :'master' }}"
+        loading="lazy"
+      >
+    {% endif %}
+    {% if section.settings.title != blank %}
+      <div class="cont-div">
+        <h2 class="heaidng">{{ section.settings.title }}</h2>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Banner",
+  "class":"cstmtestbanner",
+  "settings": [
+    {
+      "type":"image_picker",
+      "id":"image",
+      "label":"Desktop Banner"
+    },
+    {
+      "type":"image_picker",
+      "id":"mobile_image",
+      "label":"Mobile Banner"
+    },
+    {
+      "type":"text",
+      "id":"title",
+      "label":"Title"
+    }
+  ],
+  "presets":[
+    {
+      "name": "Custom Banner"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

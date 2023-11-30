@@ -1,0 +1,252 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+/*
+----
+*/
+
+.service-center-slide-out{
+  position:relative;
+  left: 0px;
+  transition: .5s ease-in-out;
+  border: 1px solid #000;
+  width: 100%;
+
+}
+
+
+.service-center-flex-container {
+	display: flex;
+	flex-flow: row;
+	justify-service-center-content: space-around;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+
+}
+
+.service-center-flex-item {
+  
+	padding: 0px;
+	margin: 0px;
+	width: 50%;
+	color: white;
+	font-weight: bold;
+	font-size: 12px;
+	text-align: left;
+
+}
+
+.service-center-collapsible {
+
+	color: #000;
+	cursor: pointer;
+	padding: 18px 18px 18px 50px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	
+}
+
+.service-center-collapsible:hover {
+  background-color: #fff;
+  border-right: 1px solid #fff;
+}
+
+.service-center-active {
+	/*background-color: #55555529;*/
+  border-right: 1px solid #fff;
+ 
+}
+  
+
+
+.service-center-content {
+	padding: 0 18px;
+	display: none;
+	overflow: hidden;
+	background-color: #f1f1f1;
+	color: #000;
+}  
+
+.service-center-content p {
+  padding: 50px
+}
+  
+.service-center-collapsible {
+  font-size: 22px;
+  font-weight: normal;
+}
+.service-center-collapsible img {
+    width: 30px;
+    height: 30px;
+    margin-top: 0px;
+    margin-right: 10px;
+  
+}
+.service-center-collapsible p {
+    display: flex;
+    align-items: center;
+}  
+.service-center-flex-item button.inquire {
+    margin: 0 auto;
+    color: #000;
+    display: block;
+    padding: 20px 150px 20px 150px;
+    border: 1px solid #000;
+}
+
+  section.servicecenter div.image-overlay__image-wrapper {
+    width : 40%;
+    height : 70%;
+    padding : 0!important;
+  }
+
+section.servicecenter image-with-text-overlay {
+      background: none;
+}
+
+section.servicecenter div.container {
+  color: #000;
+}    
+section.servicecenter div.container div.image-overlay__content {
+    background: #487748;
+    width: 60%;
+    padding: 50px;  
+      
+}   
+
+section.servicecenter div.container div.image-overlay__content-wrapper {
+  justify-content: right;
+}
+    
+section.servicecenter div.container div.image-overlay__content h3 {
+    color: #000;
+  text-align: left;
+}    
+
+section.servicecenter div.container div.image-overlay__content div p {
+  width: 100%;
+  text-align: left;
+}  
+@media (max-width:680px) { 
+.service-center-collapsible img {
+    width: 25px;
+    height: 25px;
+}
+}
+</style>
+
+<section style="margin:0;padding-bottom:50px;" class="{% if section.settings.add_vertical_spacing %}section{% endif %} {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+  <div {% if is_boxed %}class="container"{% endif %}>
+        {%- if section.settings.html != blank -%}
+          <div class="html">
+            {{- section.settings.html -}}
+          </div>
+        {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom HTML Fullwidth",
+  "class": "shopify-section--custom-html-fullwidth",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Your subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your title"
+    },
+    {
+      "type": "html",
+      "id": "html",
+      "label": "HTML",
+      "default": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_vertical_spacing",
+      "label": "Add vertical spacing",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom HTML Fullwidth"
+    }
+  ]
+}
+{% endschema %}

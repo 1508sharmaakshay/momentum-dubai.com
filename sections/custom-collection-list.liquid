@@ -1,0 +1,219 @@
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+  integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+  integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+>
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --prev-next-button-background: var(--text-color);
+    --prev-next-button-color: var(--section-background);
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+
+    {%- if section.settings.layout == 'collage' -%}
+      --section-collage-column: {{ section.blocks.size | at_most: 2 }};
+    {%- endif -%}
+  }
+
+  {%- for block in section.blocks -%}
+    #block-{{ section.id }}-{{ block.id }} {
+      {% if block.settings.text_color == 'rgba(0,0,0,0)' %}
+        {%- assign text_color_rgb = '255, 255, 255' -%}
+      {%- else -%}
+        {%- capture text_color_rgb -%}{{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }}{%- endcapture -%}
+      {%- endif -%}
+
+      --heading-color: {{ text_color_rgb }};
+      --text-color: {{ text_color_rgb }};
+      --section-block-overlay: {{ block.settings.overlay_color.red }}, {{ block.settings.overlay_color.green }}, {{ block.settings.overlay_color.blue }};
+      --section-block-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    }
+  {%- endfor -%}
+</style>
+<div class="main-coll-list">
+  {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+    <header class="section__header container text-container">
+      {%- if section.settings.subheading != blank -%}
+        <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  <div class="cstm_collList">
+    <div class="collSlider owl-carousel">
+      {%- for block in section.blocks -%}
+        <div class="item">
+          <div class="cstm-gridcoll">
+            <img src="{{ block.settings.image | img_url : 'master' }}">
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="cstmnavbtn">
+       <button class="list-collections__arrow prev-next-button prev-next-button--prev customNextBtn">
+              <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+              {%- include 'icon' with 'nav-arrow-left', block: true, direction_aware: true -%}
+            </button>
+
+            <button class="list-collections__arrow prev-next-button prev-next-button--next customPrevBtn">
+              <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+              {%- include 'icon' with 'nav-arrow-right', block: true, direction_aware: true -%}
+            </button>
+    </div>
+    </div>
+</div>
+
+<script>
+  $('.collSlider.owl-carousel').owlCarousel({
+      loop:true,
+      margin:20,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:2
+          },
+          600:{
+              items:3
+          },
+          1000:{
+              items:5
+          }
+      }
+  })
+  var owl = $('.collSlider.owl-carousel');
+owl.owlCarousel();
+// Go to the next item
+$('.customNextBtn').click(function() {
+    owl.trigger('next.owl.carousel');
+})
+// Go to the previous item
+$('.customPrevBtn').click(function() {
+    // With optional speed parameter
+    // Parameters has to be in square bracket '[]'
+    owl.trigger('prev.owl.carousel', [300]);
+})
+</script>
+
+{% schema %}
+{
+  "name": "New Collection List",
+  "class":"newcolList",
+  "settings": [
+    {
+      "type":"text",
+      "id":"subheading",
+      "label":"Sub Heading"
+    },
+    {
+      "type":"text",
+      "id":"title",
+      "label":"Title"
+    }
+  ],
+  "blocks":[
+    {
+      "type":"collection",
+      "name":"collection",
+      "settings":[
+        {
+          "type":"collection",
+          "id":"collection",
+          "label":"Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Grid and carousel modes: 1100 x 1400px .jpg recommended / Collage mode: 1320 x 1480px .jpg recommended (highlighted image) and 1320 x 700px .jpg recommended (normal image)"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL",
+          "info": "If none is set, collection URL is used."
+        },
+         {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name":"custom Collection List"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

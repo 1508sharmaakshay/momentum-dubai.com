@@ -1,0 +1,340 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+ 
+  
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+
+  
+  .service-center-slide-out{ border-left: none; border-right: none; }
+  .service-center-collapsible{
+    background: #f4f4f4;
+    transition: .3s;
+    position:relative
+  }
+  .service-center-active,
+  .service-center-collapsible:hover{
+    background: #fff;
+/*     background-image: url(https://cdn.shopify.com/s/files/1/0657/4122/6243/t/3/assets/svg_arrow.svg?v=1664339043); */
+    background-position: 85% 20px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;     
+    transition: .3s;
+  }
+  .service-center-collapsible::after{
+    content: '';
+    background-image: url(https://cdn.shopify.com/s/files/1/0657/4122/6243/t/3/assets/svg_arrow.svg?v=1664339043);
+    background-position: 85% 20px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    transition: .3s;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+  }
+  .service-center-active::after,
+  .service-center-collapsible:hover::after{
+     opacity: 1;
+  }
+  .service-center-content{
+        padding: 15px 70px;
+    height: auto;
+  }
+  .service-center-content p{ padding: 0px; }
+  .service-center-flex-item button.inquire{ margin-left: 70px;}
+  
+.inquiry-form {
+    background: transparent;
+    padding: 60px;
+    transition: .5s;
+}
+
+.service-center-flex-item button.inquire{
+    padding: 14px 150px 14px 150px;
+}
+
+.service-center-content{
+  background: transparent;
+}
+
+/*  */
+.servicecenter-inquiry-form #service_request_form{ padding: 0 100px;}
+.servicecenter-inquiry-form h1.Form__Title {
+    color: #171717!important;
+    font-size: 50px;
+    letter-spacing: 0!important;
+    text-align: center;
+    margin-bottom: 40px!important;
+}
+.servicecenter-inquiry-form .Form__FloatingLabel {
+  display:none;
+}
+.servicecenter-inquiry-form .Form__FloatingLabel.shown{ display:block;}
+.servicecenter-inquiry-form .Form__Item{
+    width: 50%;
+    float: left;
+    padding: 0 0px;
+    margin-bottom: 24px;
+}
+
+.servicecenter-inquiry-form .Form__Item:nth-child(odd){
+    padding-left: 20px;
+}
+.servicecenter-inquiry-form .Form__Item:nth-child(even){
+    padding-right: 20px;
+}
+
+.servicecenter-inquiry-form .Form__Item input,
+.servicecenter-inquiry-form .Form__Item select,
+.servicecenter-inquiry-form .Form__Item textarea{
+    height: 50px;
+    border: solid 1px #171717;
+    border-radius: 0px;
+    padding: 0 15px;
+    margin-bottom: 20px;
+    width: 100%; 
+    margin:0px;
+    outline: none!important;
+    box-shadow: none;
+}
+.servicecenter-inquiry-form .Form__Item textarea{
+    resize: none;
+    padding: 5px 15px;
+    height: 125px!important;
+}
+.servicecenter-inquiry-form .iti--allow-dropdown{
+   width: 100%; 
+}
+.iti--separate-dial-code .iti__selected-dial-code{
+  background: #f5f5f5!important;
+}
+.servicecenter-inquiry-form .Form__Item .c-checkbox{
+    position: relative;
+    padding-left: 35px;
+    line-height: 1.2;
+    width: 100%;
+}
+.servicecenter-inquiry-form .Form__Item .c-checkbox input{
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    position: absolute;
+    margin-top: -4px;
+    left: 0;
+}
+ .servicecenter-inquiry-form .ch_box{
+    width: 100%;
+    padding-bottom: 15px;
+    padding-left: 0px!important;
+    padding-right: 20px!important;
+}
+
+.servicecenter-inquiry-form .custom-file{
+    border: solid 1px #171717;
+    margin: 0;
+    height: 50px;
+    justify-content: center;
+    position:relative;
+    padding-left: 20px!important;
+    margin-bottom: 24px;
+}
+
+.servicecenter-inquiry-form .custom-file input{
+  border:none;
+  opacity:0;
+  position: absolute;
+  height: 50px;
+  margin-bottom: 0px;
+  left: 0;
+  z-index: 1;
+}
+.servicecenter-inquiry-form .custom-file label{ padding-top: 10px;}
+.servicecenter-inquiry-form .bt_choose{
+    background-color: #171717;
+    color: #fff;
+    display: inline-block;
+    font-size: 18px;
+    width: 150px;
+    text-align: center;
+    padding: 3px 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.button_wrap{
+  display: inline-block;
+  width:100%;
+  padding: 0px 0px;
+  text-align:center;
+}
+.button_wrap button{
+    border: none;
+    background-color: #171717;
+    color: #fff;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+/* map area */
+.bringfields {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 50px 0 0 0;
+}
+.left_brigfields{
+   flex-basis: 50%;
+}
+.left_brigfields h3{
+  font-size: 36px;
+  font-weight:normal;
+}
+.left_brigfields address{
+  font-style: normal;
+  font-size: 18px;
+}
+.right_brigfields{
+   flex-basis: 50%;
+  height: 500px;
+}
+.right_brigfields iframe{
+  height: 100%;
+}
+</style>
+
+<section class="{% if section.settings.add_vertical_spacing %}section{% endif %} {% unless blends_with_background or is_boxed %}section--flush{% endunless %} {{section.settings.customclassname}}">
+  <div {% if is_boxed %}class="container"{% endif %}>
+    <div class="section__color-wrapper {% if is_boxed %}section__color-wrapper--boxed{% endif %}">
+      <div class="{% unless is_boxed %}container{% endunless %} {% unless blends_with_background %}vertical-breather{% endunless %}">
+        {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+          <header class="section__header text-container">
+            {%- if section.settings.subheading != blank -%}
+              <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.title != blank -%}
+              <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+          </header>
+        {%- endif -%}
+
+        {%- if section.settings.html != blank -%}
+          <div class="html">
+            {{- section.settings.html -}}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom HTML",
+  "class": "shopify-section--custom-html",
+  "settings": [
+    {
+      "type": "text",
+      "id": "customclassname",
+      "label": "customclassname",
+      "default": "customclassname"
+    },    
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Your subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your title"
+    },
+    {
+      "type": "html",
+      "id": "html",
+      "label": "HTML",
+      "default": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_vertical_spacing",
+      "label": "Add vertical spacing",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom HTML"
+    }
+  ]
+}
+{% endschema %}

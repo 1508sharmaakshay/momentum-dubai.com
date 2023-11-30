@@ -1,0 +1,80 @@
+<section class="ts-landing-videos-section">
+  <div class="ts-landing-videos-contianer container">
+    <div class="ts-landing-videos-row">
+      <div class="ts-landing-videos-col">
+        <video width="100%" height="240" autoplay muted loop playsinline>
+          {% if section.settings.video_link != blank %}
+            <source src="{{ section.settings.video_link }}" type="video/mp4">
+          {% endif %}
+          {% if section.settings.video_link2 != blank %}
+            <source src="{{ section.settings.video_link2 }}" type="video/webm">
+          {% endif %}
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="ts-landing-videos-col ts-landing-videos-col-cenetr">
+        {% if section.settings.video_link3 != blank %}{{ section.settings.banner_text }}{% endif %}
+      </div>
+      <div class="ts-landing-videos-col">
+        <video width="100%" height="240" autoplay muted loop playsinline>
+          {% if section.settings.video_link3 != blank %}
+            <source src="{{ section.settings.video_link3 }}" type="video/mp4">
+          {% endif %}
+          {% if section.settings.video_link4 != blank %}
+            <source src="{{ section.settings.video_link4 }}" type="video/webm">
+          {% endif %}
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Video On Banner",
+  "class": "shopify-section--video",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "video_enble",
+      "label": "Video Enble",
+      "default": true
+    },
+    {
+      "type":"text",
+      "id":"video_link",
+      "label":"Video link",
+      "info":"For mp4 video "
+    },
+     {
+      "type":"text",
+      "id":"video_link2",
+      "label":"Video link",
+      "info":"For webm video"
+    },
+    {
+      "type":"text",
+      "id":"video_link3",
+      "label":"Video link3",
+      "info":"For mp4 video "
+    },
+     {
+      "type":"text",
+      "id":"video_link4",
+      "label":"Video link4",
+      "info":"For webm video"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Heading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video On Banner"
+    }
+  ]
+}
+{% endschema %}
