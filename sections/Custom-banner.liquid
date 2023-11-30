@@ -1,5 +1,9 @@
 <div class="mainbaner">
   <div class="inner-mainbanner">
+    
+{% if section.settings.logo != blank %}
+    <img class="imglogo" src="{{ section.settings.logo | img_url : 'master' }}" loading="lazy">
+    {% endif %}
    {% if section.settings.image != blank %}
     <img
       class="{% if section.settings.mobile_image != blank %}desktopbanner{% endif %} cstmbannerimg"
@@ -27,6 +31,11 @@
   "name": "Custom Banner",
   "class":"cstmtestbanner",
   "settings": [
+    {
+      "type":"image_picker",
+      "id":"logo",
+      "label":"Logo"
+    },
     {
       "type":"image_picker",
       "id":"image",

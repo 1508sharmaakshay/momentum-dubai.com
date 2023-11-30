@@ -167,7 +167,7 @@
   {%- endcapture -%}
 {% endcomment %}
   {%- capture video_content -%}
-    <div class="video-section {{ block.settings.classname }} video-section--{% if block.settings.background_type == 'boxed' %}boxed{% else %}full{% endif %} video-section--{{ block.settings.video_size }}  {% if block.settings.video_enble %}with-vdio-{% endif %}{% if block.settings.banner_image != blank %}enbled-bg-image{% endif %} enabled-bg-image-mobile" {% if block.settings.banner_image != blank %}style="background-image:url('{{ block.settings.banner_image | img_url : 'master' }}')"{% endif %}> 
+    <div class="video-section {{ block.settings.classname }} video-section--{% if block.settings.background_type == 'boxed' %}boxed{% else %}full{% endif %} video-section--{{ block.settings.video_size }}  {% if block.settings.video_enble %}with-vdio-{% endif %}{% if block.settings.banner_image != blank %}enbled-bg-image{% endif %} enabled-bg-image-mobile lazybg" {% if block.settings.banner_image != blank %}style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAQAAABeK7cBAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII=);" data-style="background-image:url('{{ block.settings.banner_image | img_url : 'master' }}')"{% endif %}>
 
       <div class="cta_video_wrapper container">
       <div class="cta-video">

@@ -14,111 +14,76 @@
 	width: 100%;
 }
 
-.animation-element.slide-up {
-	opacity: 1;
-}
+
   .grand-opening form#contact_form {
 margin: 0;
 padding: 32px;
 border: 1px solid #ca6019;
 background: #ca6019;
-position: absolute;
+position: relative;
 z-index: 100;
-/*transition: all 500ms linear;*/
-/*transform: translate3d(0, 100px, 0);*/
-    max-width:500px;
-    top:350px;
+transition: all 500ms linear;
+transform: translate3d(0, 100px, 0);
+margin-top: -1400px !important;
 }
 @media(min-width:320px) and (max-width:500px)
   {
     .grand-opening form#contact_form {
-/* margin-top: -300px !important; */
-         top:50px;
-      max-width: 295px;
-      left: 50%;
-    margin-left: -147.5px;
+margin-top: -300px !important;
 }  
   }
 
   @media(min-width:501px) and (max-width:600px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -390px !important;*/
-        top:76px;
+margin-top: -390px !important;
 }  
   }
 
     @media(min-width:601px) and (max-width:750px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -500px !important;*/
-        top:130px;
+margin-top: -500px !important;
 }  
   }
       @media(min-width:751px) and (max-width:850px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -700px !important;*/
-          top:150px;
+margin-top: -600px !important;
 }  
   }
         @media(min-width:851px) and (max-width:1000px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -950px !important;*/
-          top:170px;
+margin-top: -700px !important;
 }  
   }
-          @media(min-width:1001px) and (max-width:1600px)
-  {
-    .grand-opening form#contact_form {
-/*margin-top: -1250px !important;*/
-      top:250px;
-}  
-  }
-  
+
           @media(min-width:1001px) and (max-width:1200px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -1250px !important;*/
+margin-top: -800px !important;
 }  
   }
             @media(min-width:1201px) and (max-width:1400px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -1450px !important;*/
+margin-top: -950px !important;
 }  
   }
               @media(min-width:1401px) and (max-width:1600px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -1750px !important;*/
+margin-top: -1050px !important;
 }  
   }
                 @media(min-width:1601px) and (max-width:1800px)
   {
     .grand-opening form#contact_form {
-/*margin-top: -1950px !important;*/
+margin-top: -1200px !important;
 }  
   }
-   @media(min-width:3000px)
-  {
-    .grand-opening form#contact_form {
-/*margin-top: -3950px !important;*/
-}  
-  }
-   @media(min-width:2200px)
-  {
-    .grand-opening form#contact_form {
-/*margin-top: -2850px !important;*/
-}  
-  }
-    @media(min-width:4000px)
-  {
-    .grand-opening form#contact_form {
-/*margin-top: -6450px !important;*/
-}  
-  }
+  
 .grand-opening form#contact_form h3 {
 margin-top: 0;
 font-family: rector-medium;
@@ -126,7 +91,6 @@ font-weight: bold;
 font-style: var(--heading-font-style);
 color: rgb(var(--heading-color));
 font-size: 50px;
-  line-height:50px;
 letter-spacing: 0px;
 text-align: center;
 margin:0px;
@@ -217,7 +181,7 @@ text-align: center;
           </div>
       
           <div class="Form__Item phone_fields">
-            <input id="phone" type="tel" class="required Form__Input bg_color" name="phone" aria-label="Phone No." placeholder="Phone No. *" required>
+            <input id="phone2" type="tel" class="required Form__Input bg_color" name="phone" aria-label="Phone No." placeholder="Phone No. *" required>
            <label class="Form__FloatingLabel phnlbl label2 ts-label-block">Phone No. *</label>
         </div>
       
@@ -779,9 +743,9 @@ function check_if_in_view() {
     //check to see if this current container is within viewport
     if ((element_bottom_position >= window_top_position) &&
         (element_top_position <= window_bottom_position)) {
-      $element.addClass('ibbn-view');
+      $element.addClass('in-view');
     } else {
-      $element.removeClass('ivvn-view');
+      $element.removeClass('in-view');
     }
   });
 }

@@ -151,7 +151,7 @@ single product enquire top
 
  {% if product.tags contains 'Shipping From' %}
 {% if product.metafields.custom.shipping_from != blank %}
-Shipping From {{ product.metafields.custom.shipping_from | date: '%B' | truncate: 3, ""}} {{ product.metafields.custom.shipping_from | date: '%d'}} at {{ product.metafields.custom.shipping_from.value | date: '%I:%M %p' }} GST
+Shipping From {{ product.metafields.custom.shipping_from | date: '%B' | truncate: 3, ""}} {{ product.metafields.custom.shipping_from | date: '%d'}} 
 {% endif %}
 {% endif %}
 

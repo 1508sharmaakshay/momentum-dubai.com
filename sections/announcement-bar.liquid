@@ -122,10 +122,8 @@
     </announcement-bar>
   </section>
 
-  <script>
-
+<script type="lazyload2">
     setInterval(showtimer, 1000);
-    
     function showtimer(){
       const d = new Date();
       const localTime = d.getTime();
@@ -143,9 +141,6 @@
       document.getElementById('moment_date').innerHTML  = today.format("MMM Do");
       document.getElementById('moment_datetime').innerHTML  = today.format('LTS');      
     } 
-
-    
-
     document.documentElement.style.setProperty('--announcement-bar-height', document.getElementById('shopify-section-{{ section.id }}').clientHeight + 'px');
   </script>
 {%- endif -%}

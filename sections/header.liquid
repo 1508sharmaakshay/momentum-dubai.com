@@ -315,7 +315,7 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
         <div class="header__logo_inn logoanimbg" style="background-image:url({{ section.settings.logo | img_url: logo_size }});background-repeat: no-repeat;background-position: center;background-size:cover;">
        {% endif %}
           
-          <div class="onlyani"><img src="https://momentum-dubai.com/cdn/shop/files/Momentum_Logo_210-white_430x.png?v=1687959090"></div>
+          <div class="onlyani"><img alt="momentum logo white" src="https://momentum-dubai.com/cdn/shop/files/Momentum_Logo_210-white_430x.png?v=1687959090"></div>
 
           <a href="{{ routes.root_url }}">
           <div class="clock">
@@ -609,8 +609,8 @@ SEARCH DRAWER
 
 {%- render 'predictive-search' -%}
 
-<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link data-href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>

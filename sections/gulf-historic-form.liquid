@@ -29,21 +29,21 @@
       #section-header, #section-footer{display:none;}
       .cstmwidth{max-width:500px;}
     
-    .icdbp div#shopify-section-announcement-bar {
+    .gulf-historic div#shopify-section-announcement-bar {
         display: none;
     }
     
-    /* .icdbp div#shopify-section-header {
+    /* .gulf-historic div#shopify-section-header {
         display: none;
     } */
     
-    /* .icdbp div#shopify-section-footer {
+    /* .gulf-historic div#shopify-section-footer {
         display: none;
     } */
-  .icdbp .minute, 
-.icdbp .hour, 
-.icdbp .second, 
-.icdbp .dot
+  .gulf-historic .minute, 
+.gulf-historic .hour, 
+.gulf-historic .second, 
+.gulf-historic .dot
 {
   background:#fff !important;
     border:1px solid #fff !important;
@@ -129,7 +129,7 @@
         margin-top: 60px;
     }
     
-    .icdbp form#contact_form {
+    .gulf-historic form#contact_form {
     margin: 0;
     padding: 32px;
     border: 1px solid #ca6019;
@@ -140,7 +140,7 @@
     transform: translate3d(0, 100px, 0);
     margin-top: -200px !important; */
     }
-    .icdbp form#contact_form h3 {
+    .gulf-historic form#contact_form h3 {
     margin-top: 0;
     font-family: rector-medium;
     font-weight: var(--heading-font-weight);
@@ -154,35 +154,35 @@
       margin-bottom:30px;
     }
 
-    .icdbp input#email::placeholder,
-    .icdbp input#phone2::placeholder,
-    .icdbp input#contactfirstname::placeholder,
-    .icdbp input#contactlastname::placeholder,
-    .icdbp select.Form__Input.bg_color::placeholder,
-    .icdbp textarea#contactcsttxet::placeholder,
-    .icdbp .custom-event-form .Form__Item input::placeholder {
+    .gulf-historic input#email::placeholder,
+    .gulf-historic input#phone2::placeholder,
+    .gulf-historic input#contactfirstname::placeholder,
+    .gulf-historic input#contactlastname::placeholder,
+    .gulf-historic select.Form__Input.bg_color::placeholder,
+    .gulf-historic textarea#contactcsttxet::placeholder,
+    .gulf-historic .custom-event-form .Form__Item input::placeholder {
         color: #000 !important;
         font-family: 'rector-medium';
         opacity: 1 !important;
     }
-    .icdbp form#contact_form_2 input::placeholder,
-    .icdbp form#contact_form_2 textarea::placeholder {
+    .gulf-historic form#contact_form_2 input::placeholder,
+    .gulf-historic form#contact_form_2 textarea::placeholder {
         color: #000 !important;
         opacity: 1 !important;
     }
     body div#main .Form__Item.is-filled select.Form__Input {
         font-family: 'rector-regular';
     }
-    .icdbp  #shopify-section-header {
+    .gulf-historic  #shopify-section-header {
         margin-bottom: calc(-1 * (var(--header-height, 0px) + var(--enable-sticky-announcement-bar) * var(--announcement-bar-height, 0px))) !important;
     }
-    .icdbp .ts-logo-slide {
+    .gulf-historic .ts-logo-slide {
         display: none;
     }
-    .icdbp .custom-event-form .Form__Item input, .icdbp .Form__Input, .icdbp .Form__Textarea {
+    .gulf-historic .custom-event-form .Form__Item input, .gulf-historic .Form__Input, .gulf-historic .Form__Textarea {
         font-family: 'rector-regular';
     }
-    .icdbp .main-outerwidth .page-widthcstm {
+    .gulf-historic .main-outerwidth .page-widthcstm {
         margin-bottom: 100px;
     }
   
@@ -201,10 +201,10 @@
     margin-top: 3px;
       
 }
-   .icdbp .btn-evn button.Form__Submit.Button.Button--full.newbtngse.btnsum {
+   .gulf-historic .btn-evn button.Form__Submit.Button.Button--full.newbtngse.btnsum {
     display: none;
 }
-.icdbp .alert.success {
+.gulf-historic .alert.success {
     display: flex;
     justify-content: center;
 }
@@ -256,7 +256,7 @@
                 </ul>
               </div>
             {%- endif -%}
-            <h3>Sign up to our newsletter to find out more!</h3>
+            <h3>Thank you for joining us!</h3>
             <div class="Form__Item" style="margin-bottom:32px;">
                 <input type="email" class="Form__Input upall" id="email" name="email" aria-label="{{ 'contact.form.email' | t }}" placeholder="{{ 'contact.form.email' | t }} *" required {% if customer %}value="{{ customer.email }}"{% endif %}>
                 <label class="Form__FloatingLabel">{{ 'contact.form.email' | t }} *</label>
@@ -641,7 +641,7 @@
     
     {% schema %}
     {
-      "name": "New Event Variable",
+      "name": "Gulf historic Form",
       "settings": [],
       "blocks": [
         {
@@ -706,7 +706,7 @@
       ],
       "presets":[
         {
-           "name":"New Event Variable"   
+           "name":"Gulf historic Form"   
         }
       ]
     }
@@ -869,7 +869,7 @@ $(document).ready(function() {
   const urlParts = url.split('?');
   if (urlParts.length > 1) {
 	const valueAfterQuestionMark = urlParts[1];
-	$('#csttxet').val('Brookfield ' + valueAfterQuestionMark);
+	$('#csttxet').val('Attended ' + valueAfterQuestionMark);
   }
 });
   </script>

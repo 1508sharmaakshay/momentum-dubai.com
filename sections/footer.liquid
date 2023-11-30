@@ -1,14 +1,11 @@
 <style>
   #shopify-section-{{ section.id }} .footer {
     {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
-
     --background: {{ settings.footer_background.red }}, {{ settings.footer_background.green }}, {{ settings.footer_background.blue }};
     --heading-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
     --text-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
     --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
-
     background-color:#000;
-    
   }
   #shopify-section-footer .footer  {
     padding-top: 170px;
@@ -24,23 +21,18 @@
   }
   .footer__item-content ul li {color:#fff;}
   .footer__item.is-first{ max-width: 700px; }
-
   .footer-social-icons{ padding-top: 55px;}
   .footer__item.is-first .footer-social-icons img{
     height: 18px;
     width: auto;
     margin: 10px 15px 0 0px;
   } 
-
   .footer__item.is-first .footer-social-icons img:nth-child(1),
   .footer__item.is-first .footer-social-icons img:nth-child(3){
     height: 27px;
     position:relative;
     top:-4px;
   } 
-
-
-
   .footer-last{ display: flex; padding-top: 45px;}
   .footer-last .footer-copyright{ flex-basis: 50%;    font-family: var(--heading-font-family)!important; }
   .footer-payment-icons{ flex-basis: 50%; text-align: right;}
@@ -60,9 +52,7 @@
     color:#ca6019;
     text-decoration: underline;
   }
-   
 </style>
-
 <footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
   <div class="container">
     <div class="footer__inner">
@@ -82,14 +72,14 @@
 
                 {%- if block.settings.content != blank -%}
                   <div class="footer__item-content">
-                   <img loading="lazy" src="{{ section.settings.footer_logo | img_url}}" width="100" height="100" />
+                   <img loading="lazy" alt="" src="{{ section.settings.footer_logo | img_url}}" width="100" height="100">
                     {{- block.settings.content -}}
                     <div class="footer-social-icons">
-                        <a href="{{ section.settings.footer_social_link1 }}"><img loading="lazy" src="{{ section.settings.footer_social1 | img_url}}" width="100" height="100"/></a>
-                        <a href="{{ section.settings.footer_social_link2 }}"><img loading="lazy" src="{{ section.settings.footer_social2 | img_url}}" width="100" height="100" /></a>
-                        <a href="{{ section.settings.footer_social_link3 }}"><img loading="lazy" src="{{ section.settings.footer_social3 | img_url}}" width="100" height="100" /></a>
-                        <a href="{{ section.settings.footer_social_link4 }}"><img loading="lazy" src="{{ section.settings.footer_social4 | img_url}}" width="100" height="100" /></a>
-                        <a href="{{ section.settings.footer_social_link5 }}"><img loading="lazy" src="{{ section.settings.footer_social5 | img_url}}" width="100" height="100" /></a>
+                        <a href="{{ section.settings.footer_social_link1 }}"><img loading="lazy" alt="{{ section.settings.footer_social1.alt }}" src="{{ section.settings.footer_social1 | img_url}}" width="100" height="100"/></a>
+                        <a href="{{ section.settings.footer_social_link2 }}"><img loading="lazy" alt="{{ section.settings.footer_social2.alt }}" src="{{ section.settings.footer_social2 | img_url}}" width="100" height="100" /></a>
+                        <a href="{{ section.settings.footer_social_link3 }}"><img loading="lazy" alt="{{ section.settings.footer_social3.alt }}" src="{{ section.settings.footer_social3 | img_url}}" width="100" height="100" /></a>
+                        <a href="{{ section.settings.footer_social_link4 }}"><img loading="lazy" alt="{{ section.settings.footer_social4.alt }}" src="{{ section.settings.footer_social4 | img_url}}" width="100" height="100" /></a>
+                        <a href="{{ section.settings.footer_social_link5 }}"><img loading="lazy" alt="{{ section.settings.footer_social5.alt }}" src="{{ section.settings.footer_social5 | img_url}}" width="100" height="100" /></a>
                     </div>                  
                   </div>
                 {%- endif -%}
@@ -131,7 +121,6 @@
 
                 <div class="footer__item-content">
                   {%- if block.settings.content != blank -%}
-                    
                     {{- block.settings.content -}}
                   {%- endif -%}
 
@@ -173,10 +162,10 @@
         <div class="footer-last">
           <div class="footer-copyright">© MOMENTUM <!--<span class="separator"> | </span> Created by <a href="https://createdbyblack.com/" target="_blank">Black</a>--></div>
           <div class="footer-payment-icons">
-                        <img loading="lazy" src="{{ section.settings.footer_payment1 | img_url}}" width="100" height="100" />
-                        <img loading="lazy" src="{{ section.settings.footer_payment2 | img_url}}" width="100" height="100" />
-                        <img loading="lazy" src="{{ section.settings.footer_payment3 | img_url}}" width="100" height="100" />
-                        <img loading="lazy" src="{{ section.settings.footer_payment4 | img_url}}" width="100" height="100" />
+            <img loading="lazy" alt="{{ section.settings.footer_payment1.alt }}" src="{{ section.settings.footer_payment1 | img_url}}" width="100" height="100" />
+            <img loading="lazy" alt="{{ section.settings.footer_payment2.alt }}" src="{{ section.settings.footer_payment2 | img_url}}" width="100" height="100" />
+            <img loading="lazy" alt="{{ section.settings.footer_payment3.alt }}" src="{{ section.settings.footer_payment3 | img_url}}" width="100" height="100" />
+            <img loading="lazy" alt="{{ section.settings.footer_payment4.alt }}" src="{{ section.settings.footer_payment4 | img_url}}" width="100" height="100" />
               
           </div>
         </div>
@@ -301,7 +290,7 @@
 {%- endif -%}
 
 <!-- popup Inquiry form  -->
-<script>
+<script type="lazyload2">
     // selecting the element
     //let button = document.querySelector('#btn-inquiry');
     let button = document.querySelector('.btn-enquiry');
@@ -330,10 +319,8 @@
       main_container.classList.remove('lock-all');
     });
 </script>
-
 <!-- popup contact form  -->
-<script>
-
+<script type="lazyload2">
     let contact_popup_form = document.querySelector('#contact-popup');
     let contact_button_close = document.querySelector('#contact-btn-close');
 
@@ -347,10 +334,8 @@
       main_container.classList.remove('lock-all');
     });
 </script>
-
 <!-- service center form  -->
-<script>
-
+<script type="lazyload2">
   let serviceSubmitBtn = document.querySelector('#contact_form_save');
   
      function showServiceRequestSubmitStatus() {
@@ -367,9 +352,7 @@
         serviceSubmitBtn.classList.add('submitted');
     }  
 </script>    
-      
-
-<script>
+<script type="lazyload2">
 var service_center_coll = document.getElementsByClassName("service-center-collapsible");
 var i;
 
